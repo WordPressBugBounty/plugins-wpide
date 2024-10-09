@@ -40,7 +40,6 @@
         "symfony/polyfill-php72": "*",
         "symfony/polyfill-php80": "*",
         "symfony/polyfill-intl-idn": "*",
-        "symfony/polyfill-intl-normalizer": "*",
         "symfony/polyfill-intl-normalizer": "*"
     },
     "authors": [
@@ -50,10 +49,19 @@
         }
     ],
     "autoload": {
-        "exclude-from-classmap": ["/deploy/", "/freemius/"],
+        "exclude-from-classmap": [
+            "/deploy/",
+            "/freemius/",
+            "vendor/nikic/php-parser/grammar/rebuildParsers.php",
+            "node_modules/flatted/",
+            "src/pricing/node_modules/flatted/"
+        ],
         "files": [
             "_constants.php",
             "_compat.php",
+            "wp-content/fatal-error-handler.php"
+        ],
+        "classmap": [
             "wp-content/fatal-error-handler.php"
         ],
         "psr-4": {

@@ -9,7 +9,7 @@ define(__NAMESPACE__ . '\URL', plugin_dir_url(__FILE__));
 define(__NAMESPACE__ . '\SLUG', 'wpide');
 define(__NAMESPACE__ . '\NAME', 'WPIDE');
 
-define(__NAMESPACE__ . '\VERSION', '3.4.9');
+define(__NAMESPACE__ . '\VERSION', '3.5.0');
 define(__NAMESPACE__ . '\FM_VERSION', '7.8.1');
 
 define(__NAMESPACE__ . '\AUTHOR', 'XplodedThemes');

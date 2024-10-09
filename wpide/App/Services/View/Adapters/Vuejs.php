@@ -2,34 +2,31 @@
 
 namespace WPIDE\App\Services\View\Adapters;
 
-use  WPIDE\App\App ;
-use  WPIDE\App\Classes\Freemius ;
-use  WPIDE\App\Classes\Notices ;
-use  WPIDE\App\Config\Config ;
-use  WPIDE\App\Services\Service ;
-use  WPIDE\App\Services\View\ViewInterface ;
-use  WPIDE\WPIDE ;
-use const  WPIDE\Constants\ASSETS_URL ;
-use const  WPIDE\Constants\IS_DEV ;
-use const  WPIDE\Constants\NAME ;
-use const  WPIDE\Constants\SLUG ;
-use const  WPIDE\Constants\VERSION ;
-use const  WPIDE\Constants\WP_PATH ;
-class Vuejs implements  Service, ViewInterface 
-{
-    private  $config ;
-    public function __construct( Config $config )
-    {
+use WPIDE\App\App;
+use WPIDE\App\Classes\Freemius;
+use WPIDE\App\Classes\Notices;
+use WPIDE\App\Config\Config;
+use WPIDE\App\Services\Service;
+use WPIDE\App\Services\View\ViewInterface;
+use WPIDE\WPIDE;
+use const WPIDE\Constants\ASSETS_URL;
+use const WPIDE\Constants\IS_DEV;
+use const WPIDE\Constants\NAME;
+use const WPIDE\Constants\SLUG;
+use const WPIDE\Constants\VERSION;
+use const WPIDE\Constants\WP_PATH;
+class Vuejs implements Service, ViewInterface {
+    private $config;
+
+    public function __construct( Config $config ) {
         $this->config = $config;
     }
-    
-    public function init( array $config = array() )
-    {
+
+    public function init( array $config = [] ) {
         $assets_url = ( !IS_DEV ? ASSETS_URL : WPIDE_DEV_URL );
         $prod_assets_url = ASSETS_URL;
         $skins_url = $prod_assets_url . 'css/skins/';
         $skin = $this->config->get( 'general.skin' );
-        
         if ( !IS_DEV ) {
             wp_enqueue_style(
                 SLUG . '-vendors',
@@ -44,7 +41,6 @@ class Vuejs implements  Service, ViewInterface
                 VERSION
             );
         }
-        
         if ( $skin !== 'default' ) {
             wp_enqueue_style(
                 SLUG . '-skin',
@@ -63,7 +59,7 @@ class Vuejs implements  Service, ViewInterface
         wp_enqueue_script(
             SLUG,
             $assets_url . 'js/app.js',
-            [ 'jquery' ],
+            ['jquery'],
             VERSION,
             true
         );
@@ -73,10 +69,10 @@ class Vuejs implements  Service, ViewInterface
             'is_license_active'   => Freemius::sdk()->is__premium_only() && Freemius::sdk()->can_use_premium_code(),
             'show_freemius_menus' => Freemius::showSubmenus(),
             'plugin'              => [
-            'name'    => NAME,
-            'slug'    => SLUG,
-            'version' => VERSION,
-        ],
+                'name'    => NAME,
+                'slug'    => SLUG,
+                'version' => VERSION,
+            ],
             'ajax_url'            => App::instance()->getAjaxUrl(),
             'admin_url'           => App::instance()->getAdminUrl(),
             'assets_url'          => $assets_url,
@@ -90,20 +86,17 @@ class Vuejs implements  Service, ViewInterface
             'account_links'       => self::getAccountLinks(),
         ] );
         $inline_scripts = apply_filters( 'wpide_inline_scripts', '' );
-        if ( !empty($inline_scripts) ) {
+        if ( !empty( $inline_scripts ) ) {
             wp_add_inline_script( SLUG, $inline_scripts );
         }
         if ( Freemius::showSubmenus() && Freemius::sdk()->is__premium_only() && !wp_doing_ajax() ) {
             Freemius::addLicenseActivationDialogBox();
         }
     }
-    
-    public function getAccountLinks() : array
-    {
+
+    public function getAccountLinks() : array {
         $links = [];
-        
         if ( Freemius::showSubmenus() ) {
-            
             if ( Freemius::showUpgradeLink() ) {
                 $links[] = array(
                     'id'    => '_pricing',
@@ -120,8 +113,6 @@ class Vuejs implements  Service, ViewInterface
                     );
                 }
             }
-            
-            
             if ( Freemius::sdk()->is_registered() ) {
                 $links[] = array(
                     'id'    => 'account',
@@ -139,7 +130,6 @@ class Vuejs implements  Service, ViewInterface
                     );
                 }
             }
-            
             if ( Freemius::sdk()->has_affiliate_program() ) {
                 $links[] = array(
                     'id'    => 'affiliates',
@@ -155,7 +145,6 @@ class Vuejs implements  Service, ViewInterface
                 'icon'  => 'ni-help',
             );
         }
-        
         $links[] = array(
             'id'    => 'changelog',
             'title' => esc_html__( 'Change Log', 'wpide' ),
@@ -171,9 +160,8 @@ class Vuejs implements  Service, ViewInterface
         );
         return $links;
     }
-    
-    public function getIndexPage() : string
-    {
+
+    public function getIndexPage() : string {
         $output = '
         <noscript><strong>Please enable JavaScript to continue.</strong></noscript>
         <div id="' . SLUG . '-app"></div>

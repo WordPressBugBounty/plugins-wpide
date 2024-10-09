@@ -2,4 +2,4 @@
 
 namespace WPIDE\App\Services\Database\Traits;
 
-use  WPIDE\App\Classes\Freemius ;
+use WPIDE\App\Classes\Freemius;
