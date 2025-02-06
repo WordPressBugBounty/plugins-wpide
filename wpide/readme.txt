@@ -2,8 +2,8 @@
 Contributors: XplodedThemes
 Tags: theme editor, plugin editor, code editor, file editor, file manager, wpide, ide
 Requires at least: 5.2
-Tested up to: 6.6
-Stable tag: 3.5.0
+Tested up to: 6.7
+Stable tag: 3.5.1
 Requires PHP: 7.4.0
 Requires at least: 5.0
 License: GPLv2 or later
@@ -151,6 +151,11 @@ This option might be available on other hosting platforms as well.
 6. File Recovery Wizard
 
 == Changelog ==
+
+#### V.3.5.1 - 06.02.2025
+- **support**: WordPress 6.7
+- **update**: Freemius SDK update v2.9.0
+- **fix**: Minor fixes
 
 #### V.3.5.0 - 09.10.2024
 - **support**: WordPress 6.6

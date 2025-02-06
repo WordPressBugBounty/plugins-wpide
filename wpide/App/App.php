@@ -403,19 +403,19 @@ class App
         wp_deregister_style('l10n');
         wp_deregister_style('site-icon');
 
-        wp_register_style('color', null);
-        wp_register_style('forms', null);
-        wp_register_style('dashboard', null);
-        wp_register_style('list-tables', null);
-        wp_register_style('edit', null);
-        wp_register_style('revisions', null);
-        wp_register_style('media', null);
-        wp_register_style('themes', null);
-        wp_register_style('about', null);
-        wp_register_style('nav-menus', null);
-        wp_register_style('widgets', null);
-        wp_register_style('l10n', null);
-        wp_register_style('site-icon', null);
+        wp_register_style('color', '');
+        wp_register_style('forms', '');
+        wp_register_style('dashboard', '');
+        wp_register_style('list-tables', '');
+        wp_register_style('edit', '');
+        wp_register_style('revisions', '');
+        wp_register_style('media', '');
+        wp_register_style('themes', '');
+        wp_register_style('about', '');
+        wp_register_style('nav-menus', '');
+        wp_register_style('widgets', '');
+        wp_register_style('l10n', '');
+        wp_register_style('site-icon', '');
 
     }
 
