@@ -63,9 +63,7 @@ class Freemius {
             self::$fs->add_filter( 'hide_account_tabs', '__return_true' );
             self::$fs->add_filter( 'hide_freemius_powered_by', '__return_true' );
             self::$fs->add_filter( 'hide_billing_and_payments_info', '__return_true' );
-            self::$fs->override_i18n( array(
-                'contact-us' => __( 'Support', 'wpide' ),
-            ) );
+            self::$fs->add_action( 'plugins_loaded', [__CLASS__, 'override_freemius_strings'] );
             add_action( 'admin_enqueue_scripts', [__CLASS__, 'admin_enqueue_scripts'] );
             self::$loaded = true;
             // Signal that SDK was initiated.
@@ -210,6 +208,12 @@ class Freemius {
 
     public static function loaded() : bool {
         return self::$loaded;
+    }
+
+    public static function override_freemius_strings() : void {
+        self::$fs->override_i18n( array(
+            'contact-us' => __( 'Support', 'wpide' ),
+        ) );
     }
 
 }

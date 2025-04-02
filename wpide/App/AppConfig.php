@@ -11,7 +11,16 @@ class AppConfig {
 
     public static function load(): Config
     {
-        self::$config = empty(self::$config) ? new Config(require DIR.'_configuration.php') : self::$config;
+        if (empty(self::$config)) {
+            // Only load config after WordPress init
+            if (!did_action('init')) {
+                add_action('init', fn() => self::$config = new Config(require DIR.'_configuration.php'));
+                // Return empty config temporarily
+                self::$config = new Config([]);
+            } else {
+                self::$config = new Config(require DIR.'_configuration.php');
+            }
+        }
         return self::$config;
     }
 
