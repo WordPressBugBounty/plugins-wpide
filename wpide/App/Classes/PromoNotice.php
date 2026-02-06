@@ -73,58 +73,58 @@ class PromoNotice {
     {
 
         $year = self::$today->format('Y');
-        $nextYear = (new DateTime(self::$today->format('d-m-Y')))->add((new DateInterval('P1Y')))->format('Y');
 
-        return array_map(function($promo) {
+        return array_map(function ($promo) {
 
-            $promo['id'] = md5($promo['name'].$promo['start'].$promo['end']);
+            $promo['id'] = md5($promo['name'] . $promo['start'] . $promo['end']);
             $promo['start'] = new DateTime($promo['start']);
-            $promo['end'] = new DateTime($promo['end']);
+            //end date end of day
+            $promo['end'] = (new DateTime($promo['end']))->add(new DateInterval('P1D'))->sub(new DateInterval('PT1S'));
 
-            return (object) $promo;
+            return (object)$promo;
         }, [
-            [
-                "name" => "Valentine's Day Sale",
-                "discount" => "15%",
-                "coupon" => "VALENTINE".$year,
-                "start" => "14-02-".$year,
-                "end" => "14-02-".$year
-            ],
-            [
-                "name" => "Mother’s Day Sale",
-                "discount" => "15%",
-                "coupon" => "MOTHERS".$year,
-                "start" => "second Sunday of May ".$year,
-                "end" => "second Sunday of May ".$year
-            ],
-            [
-                "name" => "Father’s Day Sale",
-                "discount" => "15%",
-                "coupon" => "MOTHERS".$year,
-                "start" => "third Sunday of June ".$year,
-                "end" => "third Sunday of June ".$year
-            ],
-            [
-                "name" => "Halloween Sale",
-                "discount" => "15%",
-                "coupon" => "HALLOWEEN".$year,
-                "start" => "28-10-".$year,
-                "end" => "31-10-".$year
-            ],
-            [
-                "name" => "Black Friday + Cyber Monday Sale",
-                "discount" => "40%",
-                "coupon" => "BFCM".$year,
-                "start" => "20-11-".$year,
-                "end" => "30-11-".$year
-            ],
-            [
-                "name" => "Christmas + New Year Sale",
-                "discount" => "25%",
-                "coupon" => "XMAS".$year,
-                "start" => "24-12-".$year,
-                "end" => "01-01-".$nextYear
-            ]
+                [
+                        "name" => "Valentine's Day Sale",
+                        "discount" => "15%",
+                        "coupon" => "VALENTINE",
+                        "start" => "14-02-" . $year,
+                        "end" => "14-02-" . $year
+                ],
+                [
+                        "name" => "Mother’s Day Sale",
+                        "discount" => "15%",
+                        "coupon" => "MOTHERS",
+                        "start" => "second Sunday of May " . $year,
+                        "end" => "second Sunday of May " . $year
+                ],
+                [
+                        "name" => "Father’s Day Sale",
+                        "discount" => "15%",
+                        "coupon" => "FATHERS",
+                        "start" => "third Sunday of June " . $year,
+                        "end" => "third Sunday of June " . $year
+                ],
+                [
+                        "name" => "Halloween Sale",
+                        "discount" => "15%",
+                        "coupon" => "HALLOWEEN",
+                        "start" => "28-10-" . $year,
+                        "end" => "31-10-" . $year
+                ],
+                [
+                        "name" => "Black Friday + Cyber Monday Sale",
+                        "discount" => "40%",
+                        "coupon" => "BFCM",
+                        "start" => "24-11-" . $year,
+                        "end" => "01-12-" . $year
+                ],
+                [
+                        "name" => "Christmas Sale",
+                        "discount" => "25%",
+                        "coupon" => "XMAS",
+                        "start" => "24-12-" . $year,
+                        "end" => "27-12-" . $year
+                ]
         ]);
     }
 

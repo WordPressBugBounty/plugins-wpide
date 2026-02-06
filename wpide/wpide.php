@@ -10,7 +10,7 @@
  * Plugin Name: WPIDE - File Manager & Code Editor
  * Plugin URI:  https://wpide.com
  * Description: WordPress file manager with an advanced code editor / file editor featuring auto-completion of both WordPress and PHP functions with reference, syntax highlighting, line numbers, tabbed editing, automatic backup, image editor & much more!
- * Version:     3.5.2
+ * Version:     3.5.3
  * Requires PHP: 7.4.0
  * Requires at least: 5.0
  * Author:      XplodedThemes

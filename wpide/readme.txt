@@ -1,15 +1,15 @@
 === WPIDE - File Manager & Code Editor ===
 Contributors: XplodedThemes
-Tags: theme editor, plugin editor, code editor, file editor, file manager, wpide, ide
+Tags: theme editor, plugin editor, code editor, file editor, file manager
 Requires at least: 5.2
 Tested up to: 6.7
-Stable tag: 3.5.2
+Stable tag: 3.5.3
 Requires PHP: 7.4.0
 Requires at least: 5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-WPIDE is an advanced File Manager & Code Editor for WordPress. You can edit any files in your wp-content folder, not just plugins and themes. Code completion will help you remember your WordPress/PHP commands providing function reference along the way. Edit multiple files with the tabbed editor.
+WPIDE is a powerful file manager and code editor for WordPress with tabs, code completion, and full access to the entire wp-content folder.
 
 == Description ==
 
@@ -151,6 +151,9 @@ This option might be available on other hosting platforms as well.
 6. File Recovery Wizard
 
 == Changelog ==
+
+#### V.3.5.3 - 24.10.2025
+- **update**: Freemius SDK update v2.12.2
 
 #### V.3.5.2 - 01.04.2025
 - **support**: WordPress future 6.8 release
