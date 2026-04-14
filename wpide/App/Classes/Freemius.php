@@ -32,26 +32,27 @@ class Freemius {
             // Init Freemius SDK.
             require_once DIR . 'freemius/start.php';
             self::$fs = fs_dynamic_init( array(
-                'id'             => FS_ID,
-                'slug'           => SLUG,
-                'premium_slug'   => SLUG . '-pro',
-                'type'           => 'plugin',
-                'public_key'     => FS_KEY,
-                'is_premium'     => false,
-                'premium_suffix' => 'Pro',
-                'has_addons'     => false,
-                'has_paid_plans' => true,
-                'trial'          => array(
+                'id'               => FS_ID,
+                'slug'             => SLUG,
+                'premium_slug'     => SLUG . '-pro',
+                'type'             => 'plugin',
+                'public_key'       => FS_KEY,
+                'is_premium'       => false,
+                'premium_suffix'   => 'Pro',
+                'has_addons'       => false,
+                'has_paid_plans'   => true,
+                'trial'            => array(
                     'days'               => 14,
                     'is_require_payment' => true,
                 ),
-                'menu'           => array(
+                'menu'             => array(
                     'slug'        => SLUG,
                     'support'     => false,
                     'affiliation' => false,
                     'network'     => true,
                 ),
-                'is_live'        => true,
+                'is_live'          => true,
+                'is_org_compliant' => true,
             ) );
             $GLOBALS['wpide_fs'] = self::$fs;
             self::$fs->add_action( 'connect/before', [__CLASS__, 'beforeConnectBox'] );

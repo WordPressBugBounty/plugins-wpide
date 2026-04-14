@@ -2,8 +2,8 @@
 Contributors: XplodedThemes
 Tags: theme editor, plugin editor, code editor, file editor, file manager
 Requires at least: 5.2
-Tested up to: 6.7
-Stable tag: 3.5.3
+Tested up to: 7.1
+Stable tag: 3.5.4
 Requires PHP: 7.4.0
 Requires at least: 5.0
 License: GPLv2 or later
@@ -151,6 +151,14 @@ This option might be available on other hosting platforms as well.
 6. File Recovery Wizard
 
 == Changelog ==
+
+#### V.3.5.4 - 14.04.2026
+- **fix**: Updated bundled Composer libraries to reduce plugin conflicts and PHP 8.5 deprecation noise.
+- **security**: Upgraded `symfony/http-foundation` to the supported 5.4 LTS line.
+- **update**: Refreshed bundled Composer packages including `monolog/monolog`, `composer/installers`, and `symfony/mime`.
+- **fix**: Fatal error drop-in now respects silenced PHP errors and the active `error_reporting()` mask, preventing noisy `preg_match()` warnings from other plugins being written to `debug.log`.
+- **new**: Active file editor state is now reflected in the URL so refreshing the page restores the same file.
+- **fix**: Image editor state loading now avoids PHP 8.5 `json_decode(null)` deprecation notices, and logger writes now fall back to a valid file when the active `error_log` setting points to a directory.
 
 #### V.3.5.3 - 24.10.2025
 - **update**: Freemius SDK update v2.12.2
@@ -376,4 +384,3 @@ This option might be available on other hosting platforms as well.
 
 #### 1.0
 - **initial**: Initial release.
-

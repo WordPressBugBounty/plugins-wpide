@@ -62,6 +62,12 @@ if (!class_exists('WPIDE_Error_Handler')) {
                 return;
             }
 
+            // Respect the active error_reporting mask so @-suppressed warnings
+            // and globally filtered notices do not get re-logged by this handler.
+            if (-1 !== $error_type && 0 === (error_reporting() & $error_type)) {
+                return false;
+            }
+
             $fatal = false;
 
             switch ($error_type) {

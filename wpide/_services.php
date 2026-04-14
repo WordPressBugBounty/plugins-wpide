@@ -15,8 +15,20 @@ return [
         'config' => [
             'monolog_handlers' => [
                 function () {
+                    $logPath = ini_get('error_log');
+
+                    if (! is_string($logPath) || $logPath === '' || is_dir($logPath)) {
+                        $logPath = defined('WP_CONTENT_DIR')
+                            ? WP_CONTENT_DIR . '/debug.log'
+                            : TMP_DIR . '/wpide.log';
+                    }
+
+                    if (is_dir($logPath)) {
+                        $logPath = TMP_DIR . '/wpide.log';
+                    }
+
                     return new \Monolog\Handler\StreamHandler(
-                        ini_get('error_log'),
+                        $logPath,
                         \Monolog\Logger::DEBUG
                     );
                 },

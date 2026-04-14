@@ -26,12 +26,16 @@ class PromoNotice {
     /**
      * Today date
      */
-    public static $today;
+    public static $today = null;
 
     /**
      * @throws Exception
      */
     public static function init() {
+
+        if(!empty(self::$today)) {
+            return;
+        }
 
         self::$dismissed_option = App::instance()->prefix('promos_dismissed');
         self::$today = new DateTime();
@@ -46,6 +50,7 @@ class PromoNotice {
 
         // Init Promo Notice
         add_action( 'admin_notices', [ __CLASS__, 'addPromoNotice' ] );
+
     }
 
     /**
