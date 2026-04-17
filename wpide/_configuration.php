@@ -135,6 +135,24 @@ return apply_filters('wpide_config', [
             ],
             'premium' => true
         ],
+        'code_completion' => [
+            'type' => 'bool',
+            'label' => __('Enable Autocompletion', 'wpide'),
+            'desc' => __('When enabled, the editor will suggest functions while typing.', 'wpide'),
+            'default' => true
+        ],
+        'code_info_bar' => [
+            'type' => 'bool',
+            'label' => __('Enable Info Bar', 'wpide'),
+            'desc' => __('When enabled, the editor will show the function reference sidebar for the selected autocomplete suggestion.', 'wpide'),
+            'conditions'=> [
+                [
+                    'id'=> 'editor.code_completion',
+                    'value'=> true
+                ]
+            ],
+            'default' => true
+        ],
         'editable' => [
             'type' => 'select',
             'multiple' => true,

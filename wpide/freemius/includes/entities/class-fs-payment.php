@@ -132,11 +132,10 @@
          */
         function formatted_gross()
         {
-            $price = $this->gross + $this->vat;
             return (
-                ( $price < 0 ? '-' : '' ) .
+                ( $this->gross < 0 ? '-' : '' ) .
                 $this->get_symbol() .
-                number_format( abs( $price ), 2, '.', ',' ) . ' ' .
+                number_format( abs( $this->gross ), 2, '.', ',' ) . ' ' .
                 strtoupper( $this->currency )
             );
         }

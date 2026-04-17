@@ -72,6 +72,14 @@ class Config
 
             $config = $this->defaults->all();
             $this->saveOption($config);
+        } else {
+            $defaults = $this->defaults->all();
+            $merged = array_replace_recursive($defaults, $config);
+
+            if ($merged !== $config) {
+                $config = $merged;
+                $this->saveOption($config);
+            }
         }
 
         return $config;

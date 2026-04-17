@@ -374,12 +374,6 @@
 	</div>
 	<script type="text/javascript">
 		(function( $, undef ) {
-			$( 'a.thickbox' ).on( 'click', function () {
-				setTimeout( function () {
-					$( '#TB_window' ).addClass( 'plugin-details-modal' );
-				}, 0 );
-			} );
-
 			<?php if ( $open_addon ) : ?>
 
 			var interval = setInterval(function () {
@@ -497,3 +491,12 @@
 	if ( $has_tabs ) {
 		$fs->_add_tabs_after_content();
 	}
+
+	$params = array(
+		'page'           => 'addons',
+		'module_id'      => $fs->get_id(),
+		'module_type'    => $fs->get_module_type(),
+		'module_slug'    => $slug,
+		'module_version' => $fs->get_plugin_version(),
+	);
+	fs_require_template( 'powered-by.php', $params );

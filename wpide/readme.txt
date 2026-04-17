@@ -3,7 +3,7 @@ Contributors: XplodedThemes
 Tags: theme editor, plugin editor, code editor, file editor, file manager
 Requires at least: 5.2
 Tested up to: 6.9
-Stable tag: 3.5.5
+Stable tag: 3.5.6
 Requires PHP: 7.4.0
 Requires at least: 5.0
 License: GPLv2 or later
@@ -151,6 +151,12 @@ This option might be available on other hosting platforms as well.
 6. File Recovery Wizard
 
 == Changelog ==
+
+#### V.3.5.6 - 17.04.2026
+- **fix**: Restored the File Editor admin sidebar route so it opens the editor instead of bouncing back to File Manager.
+- **new**: Added separate editor settings for Autocompletion and the Info Bar, both enabled by default.
+- **fix**: Resetting the new editor settings now correctly restores their enabled default value on existing installs.
+- **fix**: File save state detection now uses the actual loaded content baseline, preventing the Save button from appearing when a file has not changed.
 
 #### V.3.5.5 - 14.04.2026
 - **fix**: Updated bundled Composer libraries to reduce plugin conflicts and PHP 8.5 deprecation noise.

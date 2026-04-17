@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'wpide/wpide',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => '97ab62eb4d98879cfd16cdf8e128a5c1eedcca42',
+        'pretty_version' => 'dev-develop',
+        'version' => 'dev-develop',
+        'reference' => '8cd899ffdc74fa99b5dc1277c7e870eeb4fb9163',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -224,9 +224,9 @@
             ),
         ),
         'wpide/wpide' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => '97ab62eb4d98879cfd16cdf8e128a5c1eedcca42',
+            'pretty_version' => 'dev-develop',
+            'version' => 'dev-develop',
+            'reference' => '8cd899ffdc74fa99b5dc1277c7e870eeb4fb9163',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

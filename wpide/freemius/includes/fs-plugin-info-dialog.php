@@ -238,7 +238,7 @@
                 $latest = $this->_fs->_fetch_latest_version(
                     $selected_addon->id,
                     true,
-                    FS_Plugin_Updater::UPDATES_CHECK_CACHE_EXPIRATION,
+                    WP_FS__TIME_24_HOURS_IN_SEC,
                     $current_addon_version
                 );
 

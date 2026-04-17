@@ -59,9 +59,7 @@
             $options            = $this->load_options();
             $has_updated_option = false;
 
-            $filtered_products         = $this->get_filtered_products();
-            $products_to_clean         = $filtered_products['products_to_clean'];
-            $active_products_by_id_map = $filtered_products['active_products_by_id_map'];
+            $products_to_clean = $this->get_products_to_clean();
 
             foreach( $products_to_clean as $product ) {
                 $slug = $product->slug;
@@ -87,25 +85,10 @@
                     } else if ( array_key_exists( "{$slug}:{$this->_type}", $option ) ) { /* admin_notices */
                         unset( $option[ "{$slug}:{$this->_type}" ] );
                         $updated = true;
-                    } else if ( isset( $product->id ) && array_key_exists( $product->id, $option ) ) { /* all_licenses, add-ons, and id_slug_type_path_map */
-                        $is_inactive_by_id   = ! isset( $active_products_by_id_map[ $product->id ] );
-                        $is_inactive_by_slug = (
-                            'id_slug_type_path_map' === $option_name &&
-                            (
-                                ! isset( $option[ $product->id ]['slug'] ) ||
-                                $slug === $option[ $product->id ]['slug']
-                            )
-                        );
-
-                        if ( $is_inactive_by_id || $is_inactive_by_slug ) {
-                            unset( $option[ $product->id ] );
-                            $updated = true;
-                        }
-                    } else if ( /* file_slug_map */
-                        isset( $product->file ) &&
-                        array_key_exists( $product->file, $option ) &&
-                        $slug === $option[ $product->file ]
-                    ) {
+                    } else if ( isset( $product->id ) && array_key_exists( $product->id, $option ) ) { /* all_licenses */
+                        unset( $option[ $product->id ] );
+                        $updated = true;
+                    } else if ( isset( $product->file ) && array_key_exists( $product->file, $option ) ) { /* file_slug_map */
                         unset( $option[ $product->file ] );
                         $updated = true;
                     }
@@ -162,12 +145,6 @@
                 if ( ! isset( $products[ $slug ] ) ) {
                     $products[ $slug ] = (object) $product_data;
                 }
-
-                // This is needed to handle a scenario in which there are duplicate sets of data for the same product, but one of them needs to be removed.
-                $products[ $slug ] = clone $products[ $slug ];
-
-                // The reason for having the line above. This also handles a scenario in which the slug is either empty or not empty but incorrect.
-                $products[ $slug ]->slug = $slug;
             }
 
             $this->update_gc_timestamp( $products );
@@ -175,9 +152,8 @@
             return $products;
         }
 
-        private function get_filtered_products() {
-            $products_to_clean         = array();
-            $active_products_by_id_map = array();
+        private function get_products_to_clean() {
+            $products_to_clean = array();
 
             $products = $this->get_products();
 
@@ -187,7 +163,6 @@
                 }
 
                 if ( $this->is_product_active( $slug ) ) {
-                    $active_products_by_id_map[ $product_data->id ] = true;
                     continue;
                 }
 
@@ -203,10 +178,7 @@
                 }
             }
 
-            return array(
-                'products_to_clean'         => $products_to_clean,
-                'active_products_by_id_map' => $active_products_by_id_map,
-            );
+            return $products_to_clean;
         }
 
         /**
