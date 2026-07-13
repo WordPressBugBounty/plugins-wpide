@@ -6,6 +6,7 @@ use WPIDE\App\Kernel\Request;
 use WPIDE\App\Kernel\Response;
 use WPIDE\App\Services\Service;
 use WPIDE\App\Services\Logger\LoggerInterface;
+use const WPIDE\Constants\SLUG;
 
 /**
  * @codeCoverageIgnore
@@ -27,7 +28,7 @@ class Security implements Service
 
     public function init(array $config = [])
     {
-        if(!wp_doing_ajax() || wp_doing_cron() || defined('WPIDE_DOING_TASK')) {
+        if(wp_doing_cron() || defined('WPIDE_DOING_TASK') || ! $this->isProtectedRequest()) {
             return;
         }
 
@@ -85,5 +86,15 @@ class Security implements Service
             }
         }
 
+    }
+
+    protected function isProtectedRequest(): bool
+    {
+        if(wp_doing_ajax()) {
+            return true;
+        }
+
+        return $this->request->query->get('page') === SLUG
+            && $this->request->query->has('req');
     }
 }
