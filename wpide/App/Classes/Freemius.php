@@ -15,6 +15,35 @@ use const WPIDE\Constants\NAME;
 use const WPIDE\Constants\SLUG;
 use const WPIDE\Constants\VERSION;
 class Freemius {
+    private const RESERVED_PRICING_REQUEST_PARAMETERS = [
+        'action',
+        'bundle_id',
+        'contact_url',
+        'disable_single_package',
+        'fs_wp_endpoint_url',
+        'home_url',
+        'is_production',
+        'license',
+        'menu_slug',
+        'mode',
+        'module_id',
+        'plugin_icon',
+        'plugin_id',
+        'plugin_public_key',
+        'plugin_version',
+        'pricing_action',
+        'request_handler_url',
+        's_ctx_id',
+        's_ctx_secure',
+        's_ctx_ts',
+        's_ctx_type',
+        'sandbox',
+        'security',
+        'selector',
+        'show_annual_in_monthly',
+        'unique_affix'
+    ];
+
     public static $fs;
 
     public static $api;
@@ -26,6 +55,7 @@ class Freemius {
      */
     public static function init() {
         if ( !isset( self::$fs ) ) {
+            self::sanitizePricingRequest();
             if ( !defined( 'WP_FS__PRODUCT_' . FS_ID . '_MULTISITE' ) ) {
                 define( 'WP_FS__PRODUCT_' . FS_ID . '_MULTISITE', true );
             }
@@ -69,6 +99,19 @@ class Freemius {
             self::$loaded = true;
             // Signal that SDK was initiated.
             do_action( 'wpide_fs_loaded' );
+        }
+    }
+
+    /**
+     * Prevent request parameters from overriding trusted pricing-page config.
+     */
+    public static function sanitizePricingRequest() : void {
+        $page = ( isset( $_GET['page'] ) && is_string( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : '' );
+        if ( SLUG . '-pricing' !== $page ) {
+            return;
+        }
+        foreach ( self::RESERVED_PRICING_REQUEST_PARAMETERS as $parameter ) {
+            unset($_GET[$parameter], $_REQUEST[$parameter]);
         }
     }
 

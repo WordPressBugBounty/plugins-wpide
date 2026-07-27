@@ -3,7 +3,7 @@ Contributors: XplodedThemes
 Tags: theme editor, plugin editor, code editor, file editor, file manager
 Requires at least: 5.2
 Tested up to: 6.9
-Stable tag: 3.5.7
+Stable tag: 3.5.8
 Requires PHP: 7.4.0
 Requires at least: 5.0
 License: GPLv2 or later
@@ -151,6 +151,9 @@ This option might be available on other hosting platforms as well.
 6. File Recovery Wizard
 
 == Changelog ==
+
+#### V.3.5.8 - 21.07.2026
+- **security**: Hardened Plans and Pricing endpoint validation and testimonial rendering to prevent cross-site scripting.
 
 #### V.3.5.7 - 13.07.2026
 - **security**: Strengthened request validation for authenticated WPIDE admin actions.
