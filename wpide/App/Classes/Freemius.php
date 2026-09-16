@@ -106,6 +106,11 @@ class Freemius {
      * Prevent request parameters from overriding trusted pricing-page config.
      */
     public static function sanitizePricingRequest() : void {
+        // Only sanitize when rendering the pricing page — never on admin-ajax,
+        // where the pricing JS legitimately passes these same params (incl. `action`).
+        if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+            return;
+        }
         $page = ( isset( $_GET['page'] ) && is_string( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : '' );
         if ( SLUG . '-pricing' !== $page ) {
             return;
