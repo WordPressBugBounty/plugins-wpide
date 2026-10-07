@@ -230,6 +230,17 @@ return [
     ],
     [
         'route' => [
+            'GET', '/readcontent', '\WPIDE\App\Controllers\FileManager\DownloadController@readContent',
+        ],
+        'roles' => [
+            'user', 'admin',
+        ],
+        'permissions' => [
+            'download',
+        ],
+    ],
+    [
+        'route' => [
             'GET', '/batchdownloadqueue', '\WPIDE\App\Controllers\FileManager\DownloadController@batchDownloadQueue',
         ],
         'roles' => [

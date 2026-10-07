@@ -3,7 +3,7 @@ Contributors: XplodedThemes
 Tags: theme editor, plugin editor, code editor, file editor, file manager
 Requires at least: 5.2
 Tested up to: 6.9
-Stable tag: 3.5.9
+Stable tag: 3.5.10
 Requires PHP: 7.4.0
 Requires at least: 5.0
 License: GPLv2 or later
@@ -151,6 +151,10 @@ This option might be available on other hosting platforms as well.
 6. File Recovery Wizard
 
 == Changelog ==
+
+#### V.3.5.10 - 2026-10-05
+- **fix**: Prevented buffered output from entering editable file contents. The File Editor now opens only complete, valid UTF-8 file reads and rejects malformed responses.
+- **fix**: Avoided redundant navigation errors when reopening the File Editor.
 
 #### V.3.5.9 - 15.09.2026
 - **fix**: Fixed the Plans and Pricing screen failing to load (endless spinner). The pricing request sanitizer no longer strips the action parameter from Freemius admin-ajax calls, which caused admin-ajax to reject pricing data requests with a 400 response.

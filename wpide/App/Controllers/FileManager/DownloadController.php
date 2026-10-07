@@ -82,7 +82,30 @@ class DownloadController
             return $response->redirect('/');
         }
 
-        $this->downloadFile($file, $request, $response, $streamedResponse);
+        return $this->downloadFile($file, $request, $response, $streamedResponse);
+    }
+
+    public function readContent(Request $request, Response $response)
+    {
+        $encodedPath = $request->input('path');
+        $path = is_string($encodedPath) ? base64_decode($encodedPath, true) : false;
+
+        if ($path === false || !$this->storage->fileExists($path)) {
+            return $response->json(__('Requested file does not exist', 'wpide'), 404);
+        }
+
+        try {
+            $file = $this->storage->read($path);
+        } catch (\Exception $error) {
+            return $response->json(__('Cannot read file, please check file permissions!', 'wpide'), 422);
+        }
+
+        $content = $file['contents'];
+        if (!is_string($content) || strlen($content) !== (int) $file['filesize'] || preg_match('//u', $content) !== 1) {
+            return $response->json(__('Cannot read file, please check file permissions!', 'wpide'), 422);
+        }
+
+        return $response->json($content);
     }
 
     /**
@@ -96,6 +119,21 @@ class DownloadController
 
         if($file['stream'] === false) {
             return $response->json('Cannot read file, please check file permissions!', 422);
+        }
+
+        // Output produced before this response would be prepended to the file. With
+        // Content-Length set below, clients can then lose the same number of bytes
+        // from the end of the file.
+        if (headers_sent()) {
+            fclose($file['stream']);
+            return $response->json('Cannot safely stream file!', 500);
+        }
+
+        while (ob_get_level() > 0) {
+            if (!@ob_end_clean()) {
+                fclose($file['stream']);
+                return $response->json('Cannot safely stream file!', 500);
+            }
         }
 
         $streamedResponse->setCallback(function () use ($file) {
