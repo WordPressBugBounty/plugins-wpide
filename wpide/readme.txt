@@ -3,7 +3,7 @@ Contributors: XplodedThemes
 Tags: theme editor, plugin editor, code editor, file editor, file manager
 Requires at least: 5.2
 Tested up to: 6.9
-Stable tag: 3.5.10
+Stable tag: 3.5.11
 Requires PHP: 7.4.0
 Requires at least: 5.0
 License: GPLv2 or later
@@ -151,6 +151,11 @@ This option might be available on other hosting platforms as well.
 6. File Recovery Wizard
 
 == Changelog ==
+
+#### V.3.5.11 - 2026-10-21
+- **fix**: Plans and Pricing now shows "/ month" for monthly plans instead of "/ year", and no period for lifetime plans.
+- **fix**: Corrected the annual "Normally" price, which showed the monthly price instead of 12 months of monthly billing.
+- **update**: Annual and lifetime savings badges are now shown inside the billing cycle switcher, which stays on one row at any screen width.
 
 #### V.3.5.10 - 2026-10-05
 - **fix**: Prevented buffered output from entering editable file contents. The File Editor now opens only complete, valid UTF-8 file reads and rejects malformed responses.
