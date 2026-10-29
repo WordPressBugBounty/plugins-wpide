@@ -1,0 +1,16 @@
+/*
+ * WPIDE's colors on the Freemius pricing page (the shared pricing app reads the --fsp-* variables and falls
+ * back to its own blue). Loaded through the SDK's "pricing/css_path" filter, see App/Classes/Freemius.php.
+ */
+#fs_pricing,
+#fs_pricing_app {
+	--fsp-primary: #6576ff;
+	--fsp-primary-soft: #f3f4ff;
+	--fsp-featured: #6576ff;
+	--fsp-ink: #364a63;
+	--fsp-text: #526484;
+	--fsp-muted: #5f7293;
+	--fsp-line: #e5e9f2;
+	--fsp-line-soft: #eef0f5;
+	--fsp-soft: #f5f6fa;
+}

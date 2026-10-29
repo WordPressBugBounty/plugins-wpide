@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'wpide/wpide',
-        'pretty_version' => 'dev-develop',
-        'version' => 'dev-develop',
-        'reference' => '8cd899ffdc74fa99b5dc1277c7e870eeb4fb9163',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => 'c4993124271aa7f6ad1ba4b8fbb60211fa638fa1',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -166,6 +166,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'scssphp/scssphp' => array(
+            'pretty_version' => 'v1.13.0',
+            'version' => '1.13.0.0',
+            'reference' => '63d1157457e5554edf00b0c1fabab4c1511d2520',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../scssphp/scssphp',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'symfony/deprecation-contracts' => array(
             'pretty_version' => 'v2.5.4',
             'version' => '2.5.4.0',
@@ -224,9 +233,9 @@
             ),
         ),
         'wpide/wpide' => array(
-            'pretty_version' => 'dev-develop',
-            'version' => 'dev-develop',
-            'reference' => '8cd899ffdc74fa99b5dc1277c7e870eeb4fb9163',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => 'c4993124271aa7f6ad1ba4b8fbb60211fa638fa1',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

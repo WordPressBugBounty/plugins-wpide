@@ -16,7 +16,7 @@ use ReflectionNamedType;
  */
 class ReflectionBasedAutowiring implements DefinitionSource, Autowiring
 {
-    public function autowire(string $name, ObjectDefinition $definition = null)
+    public function autowire(string $name, ?ObjectDefinition $definition = null)
     {
         $className = $definition ? $definition->getClassName() : $name;
 

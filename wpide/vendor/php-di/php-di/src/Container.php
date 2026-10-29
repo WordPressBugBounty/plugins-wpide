@@ -95,9 +95,9 @@ class Container implements ContainerInterface, FactoryInterface, InvokerInterfac
      * @param ContainerInterface $wrapperContainer If the container is wrapped by another container.
      */
     public function __construct(
-        MutableDefinitionSource $definitionSource = null,
-        ProxyFactory $proxyFactory = null,
-        ContainerInterface $wrapperContainer = null
+        ?MutableDefinitionSource $definitionSource = null,
+        ?ProxyFactory $proxyFactory = null,
+        ?ContainerInterface $wrapperContainer = null
     ) {
         $this->delegateContainer = $wrapperContainer ?: $this;
 

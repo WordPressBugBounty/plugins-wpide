@@ -7,6 +7,7 @@ use WPIDE\App\Classes\Freemius;
 use WPIDE\App\Classes\Notices;
 use WPIDE\App\Config\Config;
 use WPIDE\App\Services\Service;
+use WPIDE\App\Services\Snippets\Plans;
 use WPIDE\App\Services\View\ViewInterface;
 use WPIDE\WPIDE;
 use const WPIDE\Constants\ASSETS_URL;
@@ -67,6 +68,7 @@ class Vuejs implements Service, ViewInterface {
             'premium'             => Freemius::sdk()->can_use_premium_code__premium_only(),
             'is_premium_version'  => Freemius::sdk()->is__premium_only(),
             'is_license_active'   => Freemius::sdk()->is__premium_only() && Freemius::sdk()->can_use_premium_code(),
+            'plan'                => Plans::forUi(),
             'show_freemius_menus' => Freemius::showSubmenus(),
             'plugin'              => [
                 'name'    => NAME,
@@ -84,6 +86,7 @@ class Vuejs implements Service, ViewInterface {
             'fm_wp_dir'           => basename( WP_PATH ),
             'notices'             => Notices::all(),
             'account_links'       => self::getAccountLinks(),
+            'ai_credit_plans'     => Freemius::aiCreditPlans(),
         ] );
         $inline_scripts = apply_filters( 'wpide_inline_scripts', '' );
         if ( !empty( $inline_scripts ) ) {
@@ -139,10 +142,11 @@ class Vuejs implements Service, ViewInterface {
                 );
             }
             $links[] = array(
-                'id'    => 'contact',
-                'title' => esc_html__( 'Support', 'wpide' ),
-                'url'   => Freemius::sdk()->contact_url(),
-                'icon'  => 'ni-help',
+                'id'       => 'contact',
+                'title'    => esc_html__( 'Support', 'wpide' ),
+                'url'      => Freemius::supportUrl(),
+                'icon'     => 'ni-help',
+                'external' => true,
             );
         }
         $links[] = array(

@@ -55,6 +55,8 @@ class App
 
     public function activate() {
         $this->installDropIn();
+
+        \WPIDE\App\Services\Snippets\Schema::maybeInstall();
     }
 
     public function deactivate() {
@@ -113,26 +115,62 @@ class App
         return $fs->fileExists(FATAL_ERROR_DROPIN);
     }
 
+    /**
+     * Whether the installed fatal-error-handler.php drop-in belongs to WPIDE.
+     */
+    public function isOwnDropIn(): bool
+    {
+        $file = CONTENT_DIR.'/'.FATAL_ERROR_DROPIN;
+
+        if(!is_readable($file)) {
+            return false;
+        }
+
+        $header = (string) file_get_contents($file, false, null, 0, 512);
+
+        return strpos($header, 'WPide - Fatal Error Handler - Drop-In') !== false;
+    }
+
     public function installDropIn() {
 
         $fs = LocalFileSystem::load(CONTENT_DIR);
 
         if($fs->fileExists(FATAL_ERROR_DROPIN)) {
+
+            // Never replace a drop-in installed by another recovery provider.
+            if(!$this->isOwnDropIn()) {
+                update_option(FATAL_ERROR_DROPIN_VERSION_OPT.'_conflict', true);
+                return;
+            }
+
             $this->unInstallDropIn();
         }
 
         $fs->copyFile('plugins/'.basename(DIR).'/wp-content/'.FATAL_ERROR_DROPIN, './');
 
         update_option(FATAL_ERROR_DROPIN_VERSION_OPT, FATAL_ERROR_DROPIN_VERSION);
+        delete_option(FATAL_ERROR_DROPIN_VERSION_OPT.'_conflict');
     }
 
     public function unInstallDropIn() {
 
         $fs = LocalFileSystem::load(CONTENT_DIR);
 
-        if($fs->fileExists(FATAL_ERROR_DROPIN)) {
+        if($fs->fileExists(FATAL_ERROR_DROPIN) && $this->isOwnDropIn()) {
             $fs->deleteFile(FATAL_ERROR_DROPIN);
         }
+    }
+
+    public function dropInConflictNotice() {
+
+        if(!get_option(FATAL_ERROR_DROPIN_VERSION_OPT.'_conflict') || !current_user_can('manage_options')) {
+            return;
+        }
+        ?>
+        <div class="notice notice-warning wpide-notice" data-slug="<?php echo esc_attr(SLUG); ?>">
+            <p><?php echo esc_html__('WPIDE did not install its file recovery drop-in because wp-content/fatal-error-handler.php belongs to another plugin. File recovery after a fatal error is unavailable until that file is removed.', 'wpide'); ?></p>
+        </div>
+        <?php
     }
 
     /**
@@ -148,6 +186,8 @@ class App
         if(!$this->dropInExists() || !$this->isLatestDropIn()) {
             $this->installDropIn();
         }
+
+        add_action('admin_notices', [$this, 'dropInConflictNotice']);
 
         $this->loadTextDomain();
         $this->loadHooks();
@@ -281,6 +321,12 @@ class App
             [
                 'title' => __( 'Config Manager', 'wpide' ),
                 'slug' => SLUG.'#/config-manager',
+                'callback' => [$this, 'bootstrap'],
+                'position' => 30
+            ],
+            [
+                'title' => __( 'Snippets', 'wpide' ),
+                'slug' => SLUG.'#/snippets',
                 'callback' => [$this, 'bootstrap'],
                 'position' => 30
             ],
@@ -514,7 +560,7 @@ class App
      * @return string $link;
      * @since     1.0.0
      */
-    public function getExternalUrl(string $utm_content = null, string $url = null): string
+    public function getExternalUrl(?string $utm_content = null, ?string $url = null): string
     {
 
         $url = !empty($url) ? $url : PLUGIN_URL;

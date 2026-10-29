@@ -8,6 +8,7 @@ use const WPIDE\Constants\ASSETS_DIR;
 use const WPIDE\Constants\ASSETS_URL;
 use const WPIDE\Constants\AUTHOR;
 use const WPIDE\Constants\DIR;
+use const WPIDE\Constants\FS_AI_ADDON_ID;
 use const WPIDE\Constants\FS_ID;
 use const WPIDE\Constants\FS_KEY;
 use const WPIDE\Constants\GTM_ID;
@@ -15,6 +16,27 @@ use const WPIDE\Constants\NAME;
 use const WPIDE\Constants\SLUG;
 use const WPIDE\Constants\VERSION;
 class Freemius {
+    /**
+     * First-year pricing, like WPCode: yearly prices are the renewal prices and the FIRSTYEAR coupon takes $50
+     * off the first yearly payment. Plan id => the yearly price the offer was set up for; a plan whose price
+     * no longer matches shows no offer. Filter: wpide_intro_offer.
+     */
+    public const INTRO_OFFER = [
+        'coupon'        => 'FIRSTYEAR',
+        'discount'      => 50,
+        'discount_type' => 'dollar',
+        'currency'      => 'usd',
+        'plans'         => [
+            '17594' => 99,
+            '75042' => 149,
+            '75044' => 249,
+            '75050' => 399,
+        ],
+    ];
+
+    /** Support: the XplodedThemes support form with WPIDE (product 342263) preselected. Filter: wpide_support_url. */
+    public const SUPPORT_URL = 'https://xplodedthemes.com/support/?products=342263';
+
     private const RESERVED_PRICING_REQUEST_PARAMETERS = [
         'action',
         'bundle_id',
@@ -69,7 +91,7 @@ class Freemius {
                 'public_key'       => FS_KEY,
                 'is_premium'       => false,
                 'premium_suffix'   => 'Pro',
-                'has_addons'       => false,
+                'has_addons'       => true,
                 'has_paid_plans'   => true,
                 'trial'            => array(
                     'days'               => 14,
@@ -79,6 +101,8 @@ class Freemius {
                     'slug'        => SLUG,
                     'support'     => false,
                     'affiliation' => false,
+                    'addons'      => false,
+                    'contact'     => false,
                     'network'     => true,
                 ),
                 'is_live'          => true,
@@ -90,12 +114,18 @@ class Freemius {
             self::$fs->add_filter( 'checkout/purchaseCompleted', [__CLASS__, 'afterPurchaseJs'] );
             self::$fs->add_filter( 'templates/checkout.php', [__CLASS__, 'checkoutGtmScript'] );
             self::$fs->add_filter( 'freemius_pricing_js_path', [__CLASS__, 'pricingJsPath'] );
+            self::$fs->add_filter( 'pricing/css_path', [__CLASS__, 'pricingCssPath'] );
             self::$fs->add_filter( 'plugin_icon', [__CLASS__, 'pluginIcon'] );
             self::$fs->add_filter( 'hide_account_tabs', '__return_true' );
             self::$fs->add_filter( 'hide_freemius_powered_by', '__return_true' );
             self::$fs->add_filter( 'hide_billing_and_payments_info', '__return_true' );
             self::$fs->add_action( 'plugins_loaded', [__CLASS__, 'override_freemius_strings'] );
             add_action( 'admin_enqueue_scripts', [__CLASS__, 'admin_enqueue_scripts'] );
+            add_action( 'admin_footer', [__CLASS__, 'introOfferScript'], 1 );
+            // After Freemius adds Account and Pricing, so Support can sit between them as Freemius's own item did.
+            add_action( 'admin_menu', [__CLASS__, 'supportMenuItem'], PHP_INT_MAX );
+            add_action( 'network_admin_menu', [__CLASS__, 'supportMenuItem'], PHP_INT_MAX );
+            add_action( 'admin_footer', [__CLASS__, 'supportMenuScript'] );
             self::$loaded = true;
             // Signal that SDK was initiated.
             do_action( 'wpide_fs_loaded' );
@@ -116,8 +146,91 @@ class Freemius {
             return;
         }
         foreach ( self::RESERVED_PRICING_REQUEST_PARAMETERS as $parameter ) {
+            // The WPIDE AI add-on's pricing and checkout are this page with its product id.
+            if ( $parameter === 'plugin_id' && self::aiAddonId() !== '' && isset( $_GET['plugin_id'] ) && (string) $_GET['plugin_id'] === self::aiAddonId() ) {
+                continue;
+            }
             unset($_GET[$parameter], $_REQUEST[$parameter]);
         }
+    }
+
+    /**
+     * The WPIDE AI add-on's Freemius product id: the constant, the wpide_ai_addon_id filter, or the id the
+     * cloud reported last; '' when there is none yet.
+     */
+    public static function aiAddonId() : string {
+        $id = ( FS_AI_ADDON_ID !== '' ? FS_AI_ADDON_ID : (string) get_site_transient( 'wpide_ai_addon_id' ) );
+        return preg_replace( '/\\D/', '', (string) apply_filters( 'wpide_ai_addon_id', $id ) );
+    }
+
+    /**
+     * Where to buy AI credits: the add-on's pricing page inside WPIDE ('' when the add-on does not exist yet).
+     */
+    public static function aiBuyUrl() : string {
+        $id = self::aiAddonId();
+        return ( $id !== '' && isset( self::$fs ) ? self::$fs->_get_admin_page_url( 'pricing', [
+            'plugin_id' => $id,
+        ] ) : '' );
+    }
+
+    /**
+     * The WPIDE AI add-on's plans for the "Get AI credits" chooser, each opening its checkout inside WPIDE.
+     * Freemius's pricing page only shows WPIDE's own plans, so an add-on is bought from its checkout directly.
+     * Prices as set in Freemius; filter: wpide_ai_credit_plans.
+     */
+    public static function aiCreditPlans() : array {
+        $id = self::aiAddonId();
+        if ( $id === '' || !isset( self::$fs ) ) {
+            return [];
+        }
+        $plans = apply_filters( 'wpide_ai_credit_plans', [
+            [
+                'plan_id' => '74921',
+                'title'   => __( 'AI Starter', 'wpide' ),
+                'credits' => __( '400 credits / month', 'wpide' ),
+                'price'   => '$5',
+                'period'  => __( '/ month', 'wpide' ),
+                'yearly'  => __( 'or $49 / year', 'wpide' ),
+                'cycle'   => 'monthly',
+            ],
+            [
+                'plan_id'  => '74922',
+                'title'    => __( 'AI Pro', 'wpide' ),
+                'credits'  => __( '1,500 credits / month', 'wpide' ),
+                'price'    => '$15',
+                'period'   => __( '/ month', 'wpide' ),
+                'yearly'   => __( 'or $149 / year', 'wpide' ),
+                'cycle'    => 'monthly',
+                'featured' => true,
+            ],
+            [
+                'plan_id' => '74923',
+                'title'   => __( 'AI Agency', 'wpide' ),
+                'credits' => __( '5,000 credits / month', 'wpide' ),
+                'price'   => '$39',
+                'period'  => __( '/ month', 'wpide' ),
+                'yearly'  => __( 'or $390 / year', 'wpide' ),
+                'cycle'   => 'monthly',
+            ],
+            [
+                'plan_id' => '74924',
+                'title'   => __( 'Credit pack', 'wpide' ),
+                'credits' => __( '1,000 credits that never expire', 'wpide' ),
+                'price'   => '$9',
+                'period'  => __( 'once', 'wpide' ),
+                'yearly'  => '',
+                'cycle'   => 'lifetime',
+            ]
+        ] );
+        return array_map( function ( $plan ) use($id) {
+            $plan['url'] = self::$fs->_get_admin_page_url( 'pricing', [
+                'checkout'      => 'true',
+                'plugin_id'     => $id,
+                'plan_id'       => $plan['plan_id'],
+                'billing_cycle' => $plan['cycle'],
+            ] );
+            return $plan;
+        }, $plans );
     }
 
     public static function admin_enqueue_scripts() {
@@ -203,6 +316,62 @@ class Freemius {
 
     public static function pricingJsPath() : string {
         return ASSETS_DIR . 'pricing/freemius-pricing.js';
+    }
+
+    /** WPIDE's colors for the shared pricing app (its --fsp-* variables). */
+    public static function pricingCssPath() : string {
+        return ASSETS_DIR . 'pricing-brand/wpide.css';
+    }
+
+    /**
+     * The first-year offer for the pricing page (read by its cards and checkout), printed before the page's
+     * script in the footer.
+     */
+    public static function introOfferScript() : void {
+        if ( !wp_script_is( 'freemius-pricing', 'enqueued' ) ) {
+            return;
+        }
+        $offer = apply_filters( 'wpide_intro_offer', self::INTRO_OFFER );
+        if ( empty( $offer['coupon'] ) ) {
+            return;
+        }
+        wp_add_inline_script( 'freemius-pricing', 'window.FS_PRICING_INTRO_OFFER = ' . wp_json_encode( $offer ) . ';', 'before' );
+    }
+
+    public static function supportUrl() : string {
+        return (string) apply_filters( 'wpide_support_url', self::SUPPORT_URL );
+    }
+
+    /**
+     * Support in WPIDE's menu, before Pricing (last when there is none): the XplodedThemes support page.
+     */
+    public static function supportMenuItem() : void {
+        global $submenu;
+        if ( !current_user_can( 'manage_options' ) || !isset( $submenu[SLUG] ) ) {
+            return;
+        }
+        $items = array_values( $submenu[SLUG] );
+        $at = count( $items );
+        foreach ( $items as $index => $item ) {
+            if ( ($item[2] ?? '') === SLUG . '-pricing' ) {
+                $at = $index;
+                break;
+            }
+        }
+        array_splice(
+            $items,
+            $at,
+            0,
+            [[__( 'Support', 'wpide' ), 'manage_options', self::supportUrl()]]
+        );
+        $submenu[SLUG] = $items;
+    }
+
+    /**
+     * The menu's Support item opens the support page in a new tab, like the header's Support link.
+     */
+    public static function supportMenuScript() : void {
+        printf( '<script>document.querySelectorAll(%s).forEach(function (a) { a.target = "_blank"; a.rel = "noopener"; });</script>', wp_json_encode( '#adminmenu a[href="' . esc_url( self::supportUrl() ) . '"]' ) );
     }
 
     public static function pluginIcon() : string {

@@ -1,6 +1,6 @@
 {
     "name": "wpide/wpide",
-    "description": "WP IDE",
+    "description": "WPIDE",
     "license": "GPL-2.0",
     "type": "project",
     "config": {
@@ -18,7 +18,7 @@
         }
     },
     "require": {
-        "php": "^7.4.0",
+        "php": "^7.4 || ^8.0",
         "ext-dom": "*",
         "ext-fileinfo": "*",
         "ext-json": "*",
@@ -33,6 +33,7 @@
         "nikic/php-parser": "^4.13",
         "php-di/php-di": "^6.4.0",
         "rakit/validation": "^1.1",
+        "scssphp/scssphp": "^1.13",
         "symfony/http-foundation": "^5.4",
         "symfony/mime": "^5.4"
     },
@@ -55,7 +56,9 @@
             "/freemius/",
             "vendor/nikic/php-parser/grammar/rebuildParsers.php",
             "node_modules/flatted/",
-            "src/pricing/node_modules/flatted/"
+            "src/pricing/node_modules/flatted/",
+            "/tests/",
+            "/docs/"
         ],
         "files": [
             "_constants.php",
@@ -68,5 +71,13 @@
         "psr-4": {
             "WPIDE\\": ""
         }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "@php bin/fix-php84-deprecations.php vendor"
+        ],
+        "post-update-cmd": [
+            "@php bin/fix-php84-deprecations.php vendor"
+        ]
     }
 }

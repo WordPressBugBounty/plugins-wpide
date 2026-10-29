@@ -384,7 +384,7 @@ class Ftp extends AbstractFtpAdapter
             return true;
         }
 
-        return (boolean) ftp_mkdir($connection, $directory);
+        return (bool) ftp_mkdir($connection, $directory);
     }
 
     /**

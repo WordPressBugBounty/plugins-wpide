@@ -88,7 +88,10 @@ class Config
     public function saveOption($config): bool
     {
         $updated = update_option($this->meta_key, $config);
-        $this->loadValues();
+
+        // Use the saved values directly: reloading through getOption() loops forever when the stored value
+        // cannot change (e.g. empty defaults on a new network site).
+        $this->values = new Dot($config);
 
         return $updated;
     }

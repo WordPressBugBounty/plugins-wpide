@@ -68,6 +68,13 @@ class Router implements Service
                 break;
         }
 
+        // Premium controllers are only defined when premium code can be used; answer 404 instead of a fatal error.
+        if (!class_exists($controller)) {
+            $controller = '\WPIDE\App\Controllers\ErrorController';
+            $action = 'notFound';
+            $params = [];
+        }
+
         $this->container->call([$controller, $action], $params);
 
     }

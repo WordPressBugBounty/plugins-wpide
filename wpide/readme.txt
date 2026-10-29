@@ -2,8 +2,8 @@
 Contributors: XplodedThemes
 Tags: theme editor, plugin editor, code editor, file editor, file manager
 Requires at least: 5.2
-Tested up to: 6.9
-Stable tag: 3.5.11
+Tested up to: 7.1
+Stable tag: 3.6.0
 Requires PHP: 7.4.0
 Requires at least: 5.0
 License: GPLv2 or later
@@ -63,6 +63,18 @@ Fortunately, WPIDE is built with **security in mind** and comes with this vulner
 *   Beautiful Image Gallery
 *   Video / Audio Media Player
 
+= Code Snippets (free) =
+
+*   Add PHP, JavaScript, CSS, HTML, Universal and Text snippets without editing theme files
+*   Header, body and footer scripts for the whole site
+*   Insert automatically: run everywhere, site-wide header, body and footer, before or after posts, content, paragraphs, excerpts and posts in lists, admin area
+*   Shortcodes with attributes
+*   Conditional logic: logged-in state, user role, type of page, post type, referrer, taxonomy, page URL
+*   Snippet library with 3,000+ ready-made snippets and one-click packs, no account needed
+*   32 code generators: post types, taxonomies, menus, widgets, cron jobs, schema markup and more
+*   Import from WPCode, Code Snippets, Header Footer Code Manager, Post Snippets, Simple Custom CSS & JS and Woody; export to JSON
+*   Broken PHP is refused when saved; a snippet that fails is switched off automatically; safe mode
+
 
 ###<a target="_blank" href="https://wpide.com">👉 **WPIDE PRO**</a>
 
@@ -96,6 +108,20 @@ Fortunately, WPIDE is built with **security in mind** and comes with this vulner
 * Add Patterns / Gradients
 
 
+= Code Snippets Pro =
+
+* SCSS and Blocks snippets
+* More locations: CSS selector, after a word count or share of the content, WooCommerce, Easy Digital Downloads and MemberPress
+* More conditions: page, template, author, post and user meta, device, browser, operating system, cookies, store pages and cart, memberships, schedule, location and more
+* Schedule snippets and limit them to desktop or mobile
+* Smart tags, custom shortcode names, load as a file and compressed output
+* Revisions, testing mode, page scripts, robots.txt, ads.txt and service worker files
+* Access control by role and error emails
+* Conversion tracking: Meta, Google Analytics 4, Google Ads, TikTok, Pinterest, Snapchat and OpenAI Ads, with automatic store events on larger plans
+* WPIDE Cloud: private library and deployments; multisite network snippets on the largest plan
+* AI assistant: 100 free AI credits a year with every Pro license, more with the WPIDE AI add-on
+
+
 = Database Manager =
 
 * View Tables
@@ -104,6 +130,16 @@ Fortunately, WPIDE is built with **security in mind** and comes with this vulner
 * Update Table Structure
 * Update Column Indexes
 * Safe Editing Enabled
+* Search & Replace across tables, safe for serialized data, with a preview and undo
+
+
+= Media Optimizer =
+
+* Optimize the whole media library: recompress every image size, kept only when smaller
+* WebP and AVIF copies served with the original as fallback
+* Optimize new uploads automatically
+* Replace an image file while keeping its URL
+* Originals backed up and restorable at any time
 
 
 == Installation ==
@@ -151,6 +187,23 @@ This option might be available on other hosting platforms as well.
 6. File Recovery Wizard
 
 == Changelog ==
+
+#### V.3.6.0 - 2026-10-27
+- **new**: Code Snippets, free: add PHP, JavaScript, CSS, HTML, Universal and Text snippets, insert them automatically (everywhere, header, body, footer, around posts, content and paragraphs, admin area), control where they run with conditional logic, and use shortcodes.
+- **new**: Snippet library with ready-made snippets from the WPIDE team and the community, kept up to date online and available offline, 10 one-click packs, and 32 code generators.
+- **new**: Publish your own snippets to the WPIDE library, free; link-only and private snippets need Pro. Browse and install them from wpide.com/library.
+- **new**: Import snippets from WPCode, Code Snippets, Header Footer Code Manager, Post Snippets, Simple Custom CSS & JS and Woody; export to JSON.
+- **new**: Snippet safety: broken PHP is refused when saved, a snippet that keeps failing is switched off automatically, and safe mode runs the site without snippets.
+- **new**: Pro: SCSS and Blocks snippets, all 65 locations, more conditions, schedules, device targeting, smart tags, revisions, testing mode, error emails, page scripts, and robots.txt, ads.txt and service worker files.
+- **new**: Pro: Conversion tracking for Meta, Google Analytics 4, Google Ads, TikTok, Pinterest, Snapchat and OpenAI Ads, with server-side events, and automatic WooCommerce, Easy Digital Downloads and MemberPress purchase events from the 3-site plan.
+- **new**: Pro: WPIDE Cloud: a private snippet library shared by your sites, deployments with rollback, and team roles. Sites connect by themselves when you activate your license, and disconnect when it is deactivated or expires. Multisite network snippets come with the 30-site plan.
+- **new**: WPIDE AI add-on: AI credits for the snippet assistant (write, improve, explain and fix), with monthly plans and one-time credit packs. Every Pro license includes 100 free credits a year, lifetime licenses too.
+- **new**: Pro: Database Manager Search & Replace, safe for serialized data, with a preview and undo.
+- **new**: Pro: Media optimizer on the Image Editor page: recompression, WebP and AVIF copies, optimize on upload, replace an image keeping its URL, and restorable backups.
+- **fix**: The fatal-error handler no longer hides uncaught errors, so WordPress recovery mode works again.
+- **fix**: WPIDE no longer runs out of memory on newly created network sites.
+- **fix**: Closing a dialog no longer sends you back to the dashboard.
+- **update**: Compatible with PHP 8.4 and 8.5 without deprecation notices. PHP 7.4 is still supported.
 
 #### V.3.5.11 - 2026-10-21
 - **fix**: Plans and Pricing now shows "/ month" for monthly plans instead of "/ year", and no period for lifetime plans.

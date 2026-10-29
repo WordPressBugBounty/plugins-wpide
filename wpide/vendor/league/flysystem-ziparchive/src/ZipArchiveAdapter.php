@@ -36,7 +36,7 @@ class ZipArchiveAdapter extends AbstractAdapter
      * @param ZipArchive  $archive
      * @param string|null $prefix
      */
-    public function __construct($location, ZipArchive $archive = null, $prefix = null)
+    public function __construct($location, ?ZipArchive $archive = null, $prefix = null)
     {
         $this->setArchive($archive ?: new ZipArchive());
         $this->openArchive($location);

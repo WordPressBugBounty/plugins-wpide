@@ -9,7 +9,7 @@ define(__NAMESPACE__ . '\URL', plugin_dir_url(__FILE__));
 define(__NAMESPACE__ . '\SLUG', 'wpide');
 define(__NAMESPACE__ . '\NAME', 'WPIDE');
 
-define(__NAMESPACE__ . '\VERSION', '3.5.11');
+define(__NAMESPACE__ . '\VERSION', '3.6.0');
 define(__NAMESPACE__ . '\FM_VERSION', '7.8.1');
 
 define(__NAMESPACE__ . '\AUTHOR', 'XplodedThemes');
@@ -26,7 +26,7 @@ define(__NAMESPACE__ . '\TMP_DIR', UPLOADS_DIR.'tmp/');
 define(__NAMESPACE__ . '\CONTENT_DIR', wp_normalize_path(realpath(DIR . '/../../')));
 define(__NAMESPACE__ . '\WP_PATH', wp_normalize_path(realpath(CONTENT_DIR.'/../')));
 
-define(__NAMESPACE__ . '\FATAL_ERROR_DROPIN_VERSION', '1.2');
+define(__NAMESPACE__ . '\FATAL_ERROR_DROPIN_VERSION', '1.3');
 define(__NAMESPACE__ . '\FATAL_ERROR_DROPIN_VERSION_OPT', SLUG.'_dropin_version');
 define(__NAMESPACE__ . '\FATAL_ERROR_DROPIN', 'fatal-error-handler.php');
 define(__NAMESPACE__ . '\IS_DEV', empty(getenv('SERVER_SOFTWARE')) && defined('WPIDE_DEV_ENV') && WPIDE_DEV_ENV === true && defined('WPIDE_DEV_URL'));
@@ -35,3 +35,5 @@ define(__NAMESPACE__ . '\GTM_ID', 'GTM-MRT34RM');
 
 define(__NAMESPACE__ . '\FS_ID', '10410');
 define(__NAMESPACE__ . '\FS_KEY', 'pk_cbf88d3e3daa650c15108ecc2a7b8');
+// The WPIDE AI add-on's Freemius product id (credits for the AI assistant); empty until the add-on exists.
+define(__NAMESPACE__ . '\FS_AI_ADDON_ID', '43042');

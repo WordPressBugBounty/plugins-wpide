@@ -1,7 +1,11 @@
 <?php
 /*
  * WPide - Fatal Error Handler - Drop-In
- * Takes care of catching errors and exception after editing php files using WPide file editor and offers an easy way to recover erroneous files by restoring them from saved backups
+ * Offers to restore a PHP file from its WPide backup when that file causes a fatal error after being edited with the WPide file editor.
+ *
+ * Only a shutdown function is registered. Exception and error handlers are deliberately left untouched so that
+ * uncaught Throwables stay real fatal errors: WordPress keeps its own fatal error handler (this file returns no
+ * handler object), its recovery mode and the 500 response, and other plugins' handlers keep working.
 */
 
 if (!class_exists('WPIDE_Error_Handler')) {
@@ -12,32 +16,22 @@ if (!class_exists('WPIDE_Error_Handler')) {
         protected static $slug = 'wpide';
         protected static $backupDir = '/wpide/backups/';
 
+        protected static $fatalTypes = [
+            E_ERROR => 'E_ERROR',
+            E_PARSE => 'E_PARSE',
+            E_CORE_ERROR => 'E_CORE_ERROR',
+            E_COMPILE_ERROR => 'E_COMPILE_ERROR',
+            E_USER_ERROR => 'E_USER_ERROR',
+            E_RECOVERABLE_ERROR => 'E_RECOVERABLE_ERROR',
+        ];
+
         public static function boot()
         {
 
             if (version_compare(PHP_VERSION, '7.4.0', '>=')) {
 
                 register_shutdown_function([__CLASS__, 'shutdownHandler']);
-                set_exception_handler([__CLASS__, 'exceptionHandler']);
-                set_error_handler([__CLASS__, 'errorHandler']);
             }
-        }
-
-        public static function isPluginScreen(): bool
-        {
-
-            $screen = function_exists('get_current_screen') ? get_current_screen() : null;
-
-            if(!empty($screen)) {
-                return strpos($screen->base, 'page_' . self::$slug) !== false;
-            }
-
-            if(!empty($_GET['page'])) {
-                $page = sanitize_text_field($_GET['page']);
-                return strpos($page, self::$slug) !== false;
-            }
-
-            return false;
         }
 
         public static function shutdownHandler()
@@ -50,162 +44,63 @@ if (!class_exists('WPIDE_Error_Handler')) {
             }
         }
 
-        public static function exceptionHandler(Throwable $exception)
-        {
-            self::errorHandler(-1, $exception->getMessage(), $exception->getFile(), $exception->getLine());
-        }
-
         public static function errorHandler($error_type, $error_message, $error_file, $error_line)
         {
 
-            if (!$error_type) {
+            // Non-fatal errors were already reported by PHP; only fatals can need a file recovery.
+            if (!isset(self::$fatalTypes[$error_type])) {
                 return;
             }
 
-            // Respect the active error_reporting mask so @-suppressed warnings
-            // and globally filtered notices do not get re-logged by this handler.
-            if (-1 !== $error_type && 0 === (error_reporting() & $error_type)) {
-                return false;
+            $typestr = self::$fatalTypes[$error_type];
+
+            $lockfile = self::backupDir().'.lock';
+            $backup_file = self::findBackupFile($error_file);
+
+            // Without a WPide backup of the failing file, let WordPress handle the error.
+            if (empty($backup_file) || !file_exists($backup_file)) {
+                return;
             }
 
-            $fatal = false;
+            // If on admin side, show file recovery wizard
+            if (function_exists('is_admin') && is_admin()) {
 
-            switch ($error_type) {
+                if (ob_get_length()) ob_end_clean();
 
-                case -1:
-                case E_ERROR:
-                case E_USER_ERROR:
-                case E_PARSE:
-                case E_CORE_ERROR:
-                case E_COMPILE_ERROR:
-                case E_RECOVERABLE_ERROR:
-                    $fatal = true;
-                    break;
-            }
+                if (!empty($_GET['recover'])) {
 
-            switch ($error_type) {
-                case -1: // -1 //
-                    $typestr = 'EXCEPTION';
-                    break;
-                case E_ERROR: // 1 //
-                    $typestr = 'E_ERROR';
-                    break;
-                case E_WARNING: // 2 //
-                    $typestr = 'E_WARNING';
-                    break;
-                case E_PARSE: // 4 //
-                    $typestr = 'E_PARSE';
-                    break;
-                case E_NOTICE: // 8 //
-                    $typestr = 'E_NOTICE';
-                    break;
-                case E_CORE_ERROR: // 16 //
-                    $typestr = 'E_CORE_ERROR';
-                    break;
-                case E_CORE_WARNING: // 32 //
-                    $typestr = 'E_CORE_WARNING';
-                    break;
-                case E_COMPILE_ERROR: // 64 //
-                    $typestr = 'E_COMPILE_ERROR';
-                    break;
-                case E_COMPILE_WARNING: // 128 //
-                    $typestr = 'E_COMPILE_WARNING';
-                    break;
-                case E_USER_ERROR: // 256 //
-                    $typestr = 'E_USER_ERROR';
-                    break;
-                case E_USER_WARNING: // 512 //
-                    $typestr = 'E_USER_WARNING';
-                    break;
-                case E_USER_NOTICE: // 1024 //
-                    $typestr = 'E_USER_NOTICE';
-                    break;
-                case E_STRICT: // 2048 //
-                    $typestr = 'E_STRICT';
-                    break;
-                case E_RECOVERABLE_ERROR: // 4096 //
-                    $typestr = 'E_RECOVERABLE_ERROR';
-                    break;
-                case E_DEPRECATED: // 8192 //
-                    $typestr = 'E_DEPRECATED';
-                    break;
-                case E_USER_DEPRECATED: // 16384 //
-                    $typestr = 'E_USER_DEPRECATED';
-                    break;
+                    $success = self::recoverFile($error_file, $backup_file);
 
-            }
-
-            $message = '<strong>' . $typestr . ': </strong>' . $error_message . ' in <strong>' . $error_file . '</strong> on line <strong>' . $error_line . '</strong><br/><br/>';
-
-            //Logging error on php file error log...
-            if (defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
-                error_log(strip_tags($message), 0);
-            }
-
-            if ($fatal) {
-
-                $lockfile = self::backupDir().'.lock';
-                $backup_file = self::findBackupFile($error_file);
-
-                // If backup exists
-                if (!empty($backup_file) && file_exists($backup_file)) {
-
-                    if (ob_get_length()) ob_end_clean();
-
-                    // If on admin side, show file recovery wizard
-                    if (is_admin()) {
-                        $recover = !empty($_GET['recover']);
-                        if ($recover) {
-
-                            $success = self::recoverFile($error_file, $backup_file);
-
-                            if(file_exists($lockfile)) {
-                                @unlink($lockfile);
-                            }
-
-                            wp_send_json([
-                                'success' => $success
-                            ]);
-
-                        } else {
-
-                            self::recoverTemplate($typestr, $error_message, $error_file, $error_line, $backup_file);
-
-                            file_put_contents($lockfile, '1');
-                        }
-
-                        // If on the frontend, try to recover the file silently
-                    } else if(!file_exists($lockfile)){
-
-                        if(file_exists($lockfile)) {
-                            @unlink($lockfile);
-                        }
-
-                        $success = self::recoverFile($error_file, $backup_file);
-
-                        // redirect home on success
-                        if ($success) {
-
-                            die('<meta http-equiv="refresh" content="0">');
-
-                        } else {
-
-                            // if failed, show error message
-                            self::displayError($message);
-                        }
+                    if(file_exists($lockfile)) {
+                        @unlink($lockfile);
                     }
-                    die();
+
+                    wp_send_json([
+                        'success' => $success
+                    ]);
                 }
+
+                self::recoverTemplate($typestr, $error_message, $error_file, $error_line, $backup_file);
+
+                file_put_contents($lockfile, '1');
+
+                die();
             }
 
-        }
-
-        public static function displayError($message) {
-
-            // Display error only if WP_DEBUG & WP_DEBUG_DISPLAY are enabled and not DOING_AJAX
-            if(!self::isPluginScreen() && defined('WP_DEBUG') && WP_DEBUG && defined('WP_DEBUG_DISPLAY') && WP_DEBUG_DISPLAY && !defined('DOING_AJAX')) {
-                printf('%s', $message);
+            // On the frontend, try to recover the file silently unless a recovery is pending on the admin side.
+            if (file_exists($lockfile)) {
+                return;
             }
+
+            if (self::recoverFile($error_file, $backup_file)) {
+
+                if (ob_get_length()) ob_end_clean();
+
+                // Reload the page on success.
+                die('<meta http-equiv="refresh" content="0">');
+            }
+
+            // Recovery failed: let WordPress show its error page.
         }
 
         public static function backupDir(): string
@@ -218,6 +113,10 @@ if (!class_exists('WPIDE_Error_Handler')) {
 
         public static function findBackupFile($error_file): ?string
         {
+
+            if (empty($error_file) || !defined('ABSPATH') || !is_dir(self::backupDir())) {
+                return null;
+            }
 
             $backupFolders = scandir(self::backupDir());
 
@@ -265,6 +164,11 @@ if (!class_exists('WPIDE_Error_Handler')) {
             return $result !== false;
         }
 
+        protected static function escape($value): string
+        {
+            return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+        }
+
         public static function recoverTemplate($error_type, $error_message, $error_file, $error_line, $backup_file)
         {
 
@@ -272,16 +176,16 @@ if (!class_exists('WPIDE_Error_Handler')) {
             <div class="container">
                 <div class="error">
                     <div class="error-inner">
-                        <h2><?php echo $error_type; ?></h2>
+                        <h2><?php echo self::escape($error_type); ?></h2>
                         <h3>Ooh-oh, something went wrong after modifying this file:</h3>
                         <p class="error-file">
                             <code><strong>File</strong>
-                                <span><?php echo str_replace(__DIR__, "", $error_file); ?></span></code>
+                                <span><?php echo self::escape(str_replace(__DIR__, "", $error_file)); ?></span></code>
                             <code class="error-message"><strong>Error</strong>
-                                <span><?php echo $error_message; ?></span></code>
-                            <code><strong>Line</strong> <span><?php echo $error_line; ?></span></code>
+                                <span><?php echo self::escape($error_message); ?></span></code>
+                            <code><strong>Line</strong> <span><?php echo (int) $error_line; ?></span></code>
                             <code><strong>Backup</strong>
-                                <span><?php echo str_replace(__DIR__, "", $backup_file); ?></span></code>
+                                <span><?php echo self::escape(str_replace(__DIR__, "", $backup_file)); ?></span></code>
                         </p>
                         <p class="recovering-message">
                             <strong>WPIDE</strong> will try to recover the file for you using the latest saved backup!

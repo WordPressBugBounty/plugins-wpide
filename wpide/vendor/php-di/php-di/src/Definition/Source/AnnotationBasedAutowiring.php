@@ -53,7 +53,7 @@ class AnnotationBasedAutowiring implements DefinitionSource, Autowiring
         $this->ignorePhpDocErrors = (bool) $ignorePhpDocErrors;
     }
 
-    public function autowire(string $name, ObjectDefinition $definition = null)
+    public function autowire(string $name, ?ObjectDefinition $definition = null)
     {
         $className = $definition ? $definition->getClassName() : $name;
 

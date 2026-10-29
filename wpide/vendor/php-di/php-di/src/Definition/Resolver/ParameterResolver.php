@@ -36,8 +36,8 @@ class ParameterResolver
      * @return array Parameters to use to call the function.
      */
     public function resolveParameters(
-        MethodInjection $definition = null,
-        ReflectionMethod $method = null,
+        ?MethodInjection $definition = null,
+        ?ReflectionMethod $method = null,
         array $parameters = []
     ) {
         $args = [];
