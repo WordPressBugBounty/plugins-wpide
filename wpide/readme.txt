@@ -1,463 +1,139 @@
 === WPIDE - File Manager & Code Editor ===
 Contributors: XplodedThemes
-Tags: theme editor, plugin editor, code editor, file editor, file manager
-Requires at least: 5.2
-Tested up to: 7.1
-Stable tag: 3.6.0
-Requires PHP: 7.4.0
+Tags: file manager, code editor, code snippets, file editor, snippets
 Requires at least: 5.0
+Tested up to: 7.1
+Stable tag: 3.6.1
+Requires PHP: 7.4.0
 License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-WPIDE is a powerful file manager and code editor for WordPress with tabs, code completion, and full access to the entire wp-content folder.
+Manage WordPress files, edit code and add PHP, CSS, JavaScript and HTML snippets from your dashboard.
 
 == Description ==
 
-**WPIDE** is an Advanced **File Manager** and **Code Editor** plugin for WordPress that you can use completely for free.
+Manage your WordPress site from one workspace. WPIDE brings a **file manager, code editor and code snippets** together in your dashboard, so you can browse files, edit code and add functionality without switching to FTP or changing your theme. Start free, then add advanced developer tools as your needs grow.
 
-The Code Editor lets you edit any file within your wp-content folder, not just plugins and themes.
+= Video overview =
 
-The included **code completion** will help you remember your WordPress/PHP commands providing function reference along the way. Edit multiple files with the tabbed editor.
+https://www.youtube.com/watch?v=wF0PUz8wfRM
 
-The File Manager lets you copy, move, duplicate, create archives, download, upload, edit, delete, preview files & directories **without FTP or cPanel access**.
+= Code snippets for WordPress — free =
 
-WPIDE uses a **very modern, clean and easy to use interface** to make managing and editing your files a breeze! It comes with 6 different themes and a dark mode to reduce blue light exposure.
+Add custom functionality, styles, scripts and markup without editing your theme's files. Keep your snippets in one place, activate or deactivate them, and choose where they run.
 
-**Did you know?**
-More than [700,000 WordPress websites](https://www.wordfence.com/blog/2020/09/millions-of-sites-targeted-in-file-manager-vulnerability-attacks/) were attacked during September 2020.
-Malicious bots are looking to exploit vulnerable versions of WP file manager plugins.
+* Create PHP, JavaScript, CSS, HTML, Universal and Text snippets.
+* Insert code across your site, in the header, body or footer, around posts, content, paragraphs and excerpts, or in the admin area. Use shortcodes and attributes to place snippets yourself.
+* Set conditions for pages, post types, users, roles, URLs, referrers and taxonomies.
+* Explore a library of 3,000+ ready-made snippets and 10 one-click packs. The library includes an offline fallback and does not require an account to browse.
+* Generate code for post types, taxonomies, menus, cron jobs, schema markup and more with 32 generators.
+* Import from WPCode, Code Snippets, Header Footer Code Manager, Post Snippets, Simple Custom CSS & JS and Woody, or export snippets to JSON.
+* PHP syntax is checked before saving. Snippets that repeatedly fail can be deactivated automatically, and safe mode helps you recover access.
+* Publish snippets to the public WPIDE library; link-only and private publishing require a paid plan.
 
-Fortunately, WPIDE is built with **security in mind** and comes with this vulnerability **fixed**! So rest assured! WPIDE poses no risk to you!
+= File manager — free =
 
-###▶️ VIDEO OVERVIEW
+Work with files and folders in WordPress without switching to an FTP client or hosting control panel.
 
-[youtube https://www.youtube.com/watch?v=wF0PUz8wfRM]
+* Browse a file tree, use the context menu and set a custom root path.
+* Create, copy, move, duplicate, rename and delete files and folders.
+* Upload files and folders with drag and drop, download in batches, create or extract ZIP archives, search folders and calculate folder sizes.
+* Preview images in a gallery and play supported audio and video files.
+* Use the WordPress Filesystem API for file operations.
 
-<a target="_blank" href="https://www.youtube.com/watch?v=wF0PUz8wfRM">https://www.youtube.com/watch?v=wF0PUz8wfRM</a>
+= Code editor — free =
 
-###⚡️ FEATURES
+Edit files in your wp-content folder with a tabbed editor built on Ace.
 
-*   Advanced File Manager
-*   File Tree Browser
-*   Smart context menu
-*   Customizable Root Path
-*   Create new files and directories
-*   Download files / folders (Batch support)
-*   Upload files / folders using drag n drop (Batch support)
-*   Zip / Unzip files and folders (Batch support)
-*   Deep search for files / folders by keyword
-*   Calculate folder size
-*   Advanced File Editor
-*   Editor Line numbers
-*   Editor Find + Replace
-*   Editor Syntax highlighting
-*   Editor Highlight Matching Parentheses
-*   Editor Automatic Indentation + Code Folding
-*   Editor keyboard commands / shortcuts
-*   Tabbed interface for editing multiple files
-*   WordPress and PHP code auto-completion
-*   PHP code parsing and validation
-*   PHP file backup before saving
-*   File Recovery Wizard
-*   Using WordPress filesystem API
-*   Beautiful Image Gallery
-*   Video / Audio Media Player
+* Open multiple files, with syntax highlighting, line numbers, matching parentheses, code folding, automatic indentation, find and replace, and keyboard shortcuts.
+* Use WordPress and PHP autocomplete and function references.
+* Check PHP syntax before saving; file backups and the recovery wizard can help restore a file after an error.
+* Choose from editor themes and dark mode.
 
-= Code Snippets (free) =
+= WPIDE paid plans =
 
-*   Add PHP, JavaScript, CSS, HTML, Universal and Text snippets without editing theme files
-*   Header, body and footer scripts for the whole site
-*   Insert automatically: run everywhere, site-wide header, body and footer, before or after posts, content, paragraphs, excerpts and posts in lists, admin area
-*   Shortcodes with attributes
-*   Conditional logic: logged-in state, user role, type of page, post type, referrer, taxonomy, page URL
-*   Snippet library with 3,000+ ready-made snippets and one-click packs, no account needed
-*   32 code generators: post types, taxonomies, menus, widgets, cron jobs, schema markup and more
-*   Import from WPCode, Code Snippets, Header Footer Code Manager, Post Snippets, Simple Custom CSS & JS and Woody; export to JSON
-*   Broken PHP is refused when saved; a snippet that fails is switched off automatically; safe mode
+[Compare WPIDE plans](https://wpide.com/#pricing) for the current feature and site limits. Availability varies by plan; the features below are not all included in every paid plan.
 
+* **Advanced snippets:** Add SCSS and Blocks snippets, insert at CSS selectors and in WooCommerce, Easy Digital Downloads or MemberPress, and target devices, schedules, cookies, store pages and more. Use smart tags, custom shortcode names, revisions, testing mode, page scripts, special files and error emails.
+* **Conversion tracking:** Connect Meta, Google Analytics 4, Google Ads, TikTok, Pinterest, Snapchat and OpenAI Ads; configure click events, consent options and supported server-side and store events.
+* **WPIDE Cloud and AI:** Keep a private snippet library, deploy to connected sites with rollback on eligible plans, and use the AI assistant to write, explain, improve or fix snippets. AI usage is subject to credits and plan limits; additional credits are available separately.
+* **Developer tools:** Edit WordPress core files and wp-config.php in advanced mode. Recover unsaved drafts, compare changes with quick diff and use fullscreen editing. View, add, update and remove wp-config.php constants with duplicate checks.
+* **Database manager:** Browse and create tables, manage rows, structure and indexes. Search and replace includes a preview and undo on eligible plans and supports serialized data.
+* **Image editor and media optimizer:** Crop and resize images; add filters, frames, text, stickers, patterns and gradients. On eligible plans, optimize the media library, create WebP or AVIF copies where supported, optimize uploads, replace an image while keeping its URL, and restore backed-up originals.
+* **Teams and networks:** Role-based access, geographic conditions, cloud team roles and multisite network snippets are available on eligible plans.
 
-###<a target="_blank" href="https://wpide.com">👉 **WPIDE PRO**</a>
+= External services and privacy =
 
-###⭐️ PRO FEATURES
-
-= File Editor =
-
-* **Auto Save** Feature: While editing, files will be auto saved every X seconds to a draft file. Original files are not affected. If you ever close the page by mistake without saving a file, you will be able to restore from the auto saved file.
-* Auto Saved **Quick Diff**: You can view and compare differences between the auto saved and the current file using the Quick Diff Viewer, then decide if you wish to restore from the auto saved or keep the current file.
-* Toggle **Full Screen**: This will allow you to toggle full screen the editor area by itself, giving you more space while editing on smaller screens.
-
-
-= File Manager =
-
-* Advanced Mode Option: When enabled, all files and folders will be available for editing including **core WordPress files** and the **wp-config.php** file.
-
-
-= Config Manager =
-
-* View all defined constants within wp-config.php
-* Add / Update / Remove constants
-* Prevent Duplicated Constants
-
-
-= Advanced Image Editor =
-
-* Resize / Crop Images
-* Apply filters
-* Add Frames / Corners
-* Add Text / Stickers
-* Add Patterns / Gradients
-
-
-= Code Snippets Pro =
-
-* SCSS and Blocks snippets
-* More locations: CSS selector, after a word count or share of the content, WooCommerce, Easy Digital Downloads and MemberPress
-* More conditions: page, template, author, post and user meta, device, browser, operating system, cookies, store pages and cart, memberships, schedule, location and more
-* Schedule snippets and limit them to desktop or mobile
-* Smart tags, custom shortcode names, load as a file and compressed output
-* Revisions, testing mode, page scripts, robots.txt, ads.txt and service worker files
-* Access control by role and error emails
-* Conversion tracking: Meta, Google Analytics 4, Google Ads, TikTok, Pinterest, Snapchat and OpenAI Ads, with automatic store events on larger plans
-* WPIDE Cloud: private library and deployments; multisite network snippets on the largest plan
-* AI assistant: 100 free AI credits a year with every Pro license, more with the WPIDE AI add-on
-
-
-= Database Manager =
-
-* View Tables
-* Create New Tables
-* Add / Update / Delete Rows
-* Update Table Structure
-* Update Column Indexes
-* Safe Editing Enabled
-* Search & Replace across tables, safe for serialized data, with a preview and undo
-
-
-= Media Optimizer =
-
-* Optimize the whole media library: recompress every image size, kept only when smaller
-* WebP and AVIF copies served with the original as fallback
-* Optimize new uploads automatically
-* Replace an image file while keeping its URL
-* Originals backed up and restorable at any time
-
+The public snippet library periodically requests its catalog from WPIDE Cloud at cloud.wpide.com; a bundled catalog is available when it cannot be reached. Publishing a snippet or using optional cloud features sends the information needed for that action to WPIDE Cloud. When you use the AI assistant, your request and relevant snippet code are sent through WPIDE Cloud to an AI provider after your consent. Conversion tracking sends configured events to the providers you enable. WPIDE also uses Freemius for licensing and optional account services. See the [XplodedThemes privacy policy](https://xplodedthemes.com/privacy-policy/) and [Freemius privacy policy](https://freemius.com/privacy/).
 
 == Installation ==
 
-1. Upload the WPIDE folder to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Access WPIDE by clicking the WPIDE menu item in your main administration menu
+1. Install WPIDE from Plugins > Add New in your WordPress dashboard, or upload the plugin folder to `/wp-content/plugins/`.
+2. Activate WPIDE from the Plugins screen.
+3. Open WPIDE in the WordPress admin menu and choose File Manager, File Editor or Snippets.
 
 == Frequently Asked Questions ==
 
-= What is in place to stop me from breaking my website - "The white screen of death" =
+= Is WPIDE free? =
 
-When you edit a PHP file, before that file is saved to the filesystem it is syntax checked to make sure there isn't something obvious that will break your site.
+Yes. File management, the code editor, code snippets, the public snippet library and code generators are included in the free plugin. Advanced features and tools are available on paid plans; see the [plan comparison](https://wpide.com/#pricing).
 
-Every file that you edit is backed up before your first save to the filesystem and then on subsequent saves WPIDE will try and make a backup. It will save a maximum of files for up to 5 days to the server.
+= Do I need FTP to use WPIDE? =
 
-As you edit or more specifically save PHP files, in case of a fatal error, the File recovery Wizard will appear and a restore button will display which will allow you to restore the most recent backup.
+You can manage files from the WordPress dashboard without an FTP client when your hosting permissions allow it. Keep an independent backup and a way to access your files outside WordPress in case your site becomes unavailable.
 
-If your WordPress install is fully functional then you can use the file manager to browse all of your backed up files (/upload/wpide/backups/), if your WordPress install isn't responding then restoring the file directly via FTP/SSH is the only way.
+= Can I add code snippets without editing my theme? =
 
-The backed up PHP files cannot be accessed/restored from the web directly without the 40 digit nonce/key so should not pose a security concern.
+Yes. Create a snippet in WPIDE, choose where it should run, and activate it. You can also use a shortcode to place supported snippets in content.
 
-= Can I override the default file permissions when creating files/directories on the local filesystem =
+= How does WPIDE help me recover from a code error? =
 
-Yes you can use the below WordPress settings in wp-config.php which will affect files created with WPIDE and files added during the WordPress upgrade process.
+WPIDE checks PHP syntax before saving files and snippets. It keeps file backups and provides a recovery wizard for supported fatal errors; snippets that repeatedly fail can be deactivated automatically. These protections cannot catch every problem, so keep independent backups and test changes before using them on a live site.
 
-define('FS_CHMOD_DIR', (0755 & ~ umask()));
-define('FS_CHMOD_FILE', (0644 & ~ umask()));
+If WordPress is unavailable, you may need to restore a backup through your host's file manager, FTP or SSH. WPIDE stores file backups in the uploads directory under `wpide/backups`.
 
-= I get an error notification on the bottom right saying 'something went wrong, unknown error'. How can I fix this ? =
+= Do I need an account for the snippet library? =
 
-Some hosts might disable direct access to PHP files which will block the plugin from accessing them.
+No account is needed to browse the public library. WPIDE periodically retrieves the catalog from WPIDE Cloud and falls back to a bundled copy when the service is unavailable. Publishing and optional private cloud features use a connected Freemius installation.
 
-Some users reported this issue on **Cloudways**, and they were able to fix it by enabling **Direct PHP File Access** under application settings within Cloudways dashboard.
+= Can I control permissions for newly created files and folders? =
 
-This option might be available on other hosting platforms as well.
+WordPress supports `FS_CHMOD_DIR` and `FS_CHMOD_FILE` constants in wp-config.php. Consult your host before changing file permissions.
+
+= Why do I see an unknown error when accessing files? =
+
+Some hosts block direct access to PHP files. On Cloudways, users have resolved this by enabling Direct PHP File Access in application settings. Check with your host if the problem continues.
 
 == Screenshots ==
 
-1. File Manager
-2. Code editor + Auto Complete Reference
-3. Image Gallery Viewer
-4. Video Player Viewer
-5. Files & Folders Deep Search
-6. File Recovery Wizard
+1. Browse and manage files and folders in the WordPress dashboard.
+2. Edit code with tabs, syntax highlighting and function references.
+3. Preview images in the gallery.
+4. Preview video and audio files.
+5. Search for files and folders.
+6. Restore a file with the recovery wizard.
+7. Manage and filter code snippets from one screen.
+8. Create a snippet and choose where it runs (some options shown require a paid plan).
+9. Browse the public snippet library.
+10. Generate WordPress code with guided forms.
+11. Optimize your media library (available on eligible paid plans).
 
 == Changelog ==
 
+#### V.3.6.1 - 2026-10-30
+- **fix**: Open the file tree and database tables from the mobile editor, with clearer empty states and smoother sidebar transitions.
+- **fix**: Improved mobile scrolling across WPIDE, including the AI assistant dialog.
+- **fix**: Improved the media optimizer layout on mobile.
+- **fix**: Kept the full release history available on the in-plugin changelog page.
+
 #### V.3.6.0 - 2026-10-27
-- **new**: Code Snippets, free: add PHP, JavaScript, CSS, HTML, Universal and Text snippets, insert them automatically (everywhere, header, body, footer, around posts, content and paragraphs, admin area), control where they run with conditional logic, and use shortcodes.
-- **new**: Snippet library with ready-made snippets from the WPIDE team and the community, kept up to date online and available offline, 10 one-click packs, and 32 code generators.
-- **new**: Publish your own snippets to the WPIDE library, free; link-only and private snippets need Pro. Browse and install them from wpide.com/library.
-- **new**: Import snippets from WPCode, Code Snippets, Header Footer Code Manager, Post Snippets, Simple Custom CSS & JS and Woody; export to JSON.
-- **new**: Snippet safety: broken PHP is refused when saved, a snippet that keeps failing is switched off automatically, and safe mode runs the site without snippets.
-- **new**: Pro: SCSS and Blocks snippets, all 65 locations, more conditions, schedules, device targeting, smart tags, revisions, testing mode, error emails, page scripts, and robots.txt, ads.txt and service worker files.
-- **new**: Pro: Conversion tracking for Meta, Google Analytics 4, Google Ads, TikTok, Pinterest, Snapchat and OpenAI Ads, with server-side events, and automatic WooCommerce, Easy Digital Downloads and MemberPress purchase events from the 3-site plan.
-- **new**: Pro: WPIDE Cloud: a private snippet library shared by your sites, deployments with rollback, and team roles. Sites connect by themselves when you activate your license, and disconnect when it is deactivated or expires. Multisite network snippets come with the 30-site plan.
-- **new**: WPIDE AI add-on: AI credits for the snippet assistant (write, improve, explain and fix), with monthly plans and one-time credit packs. Every Pro license includes 100 free credits a year, lifetime licenses too.
-- **new**: Pro: Database Manager Search & Replace, safe for serialized data, with a preview and undo.
-- **new**: Pro: Media optimizer on the Image Editor page: recompression, WebP and AVIF copies, optimize on upload, replace an image keeping its URL, and restorable backups.
-- **fix**: The fatal-error handler no longer hides uncaught errors, so WordPress recovery mode works again.
-- **fix**: WPIDE no longer runs out of memory on newly created network sites.
-- **fix**: Closing a dialog no longer sends you back to the dashboard.
-- **update**: Compatible with PHP 8.4 and 8.5 without deprecation notices. PHP 7.4 is still supported.
+- Added free code snippets, a public snippet library, generators, import and export, and snippet safety tools.
+- Added paid advanced snippets, conversion tracking, WPIDE Cloud, AI, database search and replace, and media optimization. Availability varies by plan.
+- Improved recovery and compatibility with PHP 8.4 and 8.5.
 
 #### V.3.5.11 - 2026-10-21
 - **fix**: Plans and Pricing now shows "/ month" for monthly plans instead of "/ year", and no period for lifetime plans.
 - **fix**: Corrected the annual "Normally" price, which showed the monthly price instead of 12 months of monthly billing.
 - **update**: Annual and lifetime savings badges are now shown inside the billing cycle switcher, which stays on one row at any screen width.
 
-#### V.3.5.10 - 2026-10-05
-- **fix**: Prevented buffered output from entering editable file contents. The File Editor now opens only complete, valid UTF-8 file reads and rejects malformed responses.
-- **fix**: Avoided redundant navigation errors when reopening the File Editor.
-
-#### V.3.5.9 - 15.09.2026
-- **fix**: Fixed the Plans and Pricing screen failing to load (endless spinner). The pricing request sanitizer no longer strips the action parameter from Freemius admin-ajax calls, which caused admin-ajax to reject pricing data requests with a 400 response.
-
-#### V.3.5.8 - 21.07.2026
-- **security**: Hardened Plans and Pricing endpoint validation and testimonial rendering to prevent cross-site scripting.
-
-#### V.3.5.7 - 13.07.2026
-- **security**: Strengthened request validation for authenticated WPIDE admin actions.
-
-#### V.3.5.6 - 17.04.2026
-- **fix**: Restored the File Editor admin sidebar route so it opens the editor instead of bouncing back to File Manager.
-- **new**: Added separate editor settings for Autocompletion and the Info Bar, both enabled by default.
-- **fix**: Resetting the new editor settings now correctly restores their enabled default value on existing installs.
-- **fix**: File save state detection now uses the actual loaded content baseline, preventing the Save button from appearing when a file has not changed.
-
-#### V.3.5.5 - 14.04.2026
-- **fix**: Updated bundled Composer libraries to reduce plugin conflicts and PHP 8.5 deprecation noise.
-- **security**: Upgraded `symfony/http-foundation` to the supported 5.4 LTS line.
-- **update**: Refreshed bundled Composer packages including `monolog/monolog`, `composer/installers`, and `symfony/mime`.
-- **fix**: Fatal error drop-in now respects silenced PHP errors and the active `error_reporting()` mask, preventing noisy `preg_match()` warnings from other plugins being written to `debug.log`.
-- **new**: Active file editor state is now reflected in the URL so refreshing the page restores the same file.
-- **fix**: Image editor state loading now avoids PHP 8.5 `json_decode(null)` deprecation notices, and logger writes now fall back to a valid file when the active `error_log` setting points to a directory.
-
-#### V.3.5.3 - 24.10.2025
-- **update**: Freemius SDK update v2.12.2
-
-#### V.3.5.2 - 01.04.2025
-- **support**: WordPress future 6.8 release
-- **update**: Freemius SDK update v2.11.0
-
-#### V.3.5.1 - 06.02.2025
-- **support**: WordPress 6.7
-- **update**: Freemius SDK update v2.9.0
-- **fix**: Minor fixes
-
-#### V.3.5.0 - 09.10.2024
-- **support**: WordPress 6.6
-- **fix**: Minor fixes
-
-#### V.3.4.9 - 05.04.2024
-- **support**: WordPress 6.5
-- **fix**: Minor fixes
-
-#### V.3.4.8 - 01.02.2024
-- **update**: Freemius SDK update v2.6.2
-- **support**: WordPress 6.4
-- **fix**: Minor fixes
-
-#### V.3.4.7 - 24.07.2023
-- **update**: Freemius SDK update v2.5.10
-
-#### 3.4.6 - 10.12.2022
-- **fix**: Instead of ABSPATH, use the correct root path, relative to the plugin in case WordPress Files are located outside the root directory, which is the case if the site is hosted on WordPress.com.
-- **fix**: Minor fixes
-
-#### 3.4.5 - 07.12.2022
-- **new**: **Pro** Config Manager | Added new visual config manager to easily Add, Update or Delete constants within the wp-config.php file
-- **new**: **Pro** File Manager | Added new **Advanced Mode** option. When enabled, all files and folders will be available for editing including core wordpress files and the wp-config.php unless they are filtered out manually within the settings.
-- **new**: **Pro** File Editor | Added new **Auto Save** option. While editing, files will automatically be saved every X seconds to a temporary draft file. Original files are not affected. If you every close or refresh the page by mistake without manually saving a file, the next time you open it, a File Recovery modal will display allowing you to restore from the auto saved file. You can also view and compare both files differences using the Quick Diff Viewer. https://d.pr/v/l6SQjD
-- **new**: File Editor | Added option to increase / decrease font size within the toolbar
-- **enhance**: File Editor | In dark mode, highlighted text bg color will now inherit the theme accent color
-- **support**: Added multisite support
-- **fix**: Settings | Fixed issue with the repeater field.
-- **fix**: Fixed scrolling issue on Firefox
-- **fix**: When opening a file, show popup error if for some reason the file does not exist, (deleted from another window) or has no read / write permissions.
-- **fix**: Minor fixes
-- **update**: Update Freemius SDK
-
-#### 3.4.4 - 19.10.2022
-- **new**: **Pro** File editor | Added new **Toggle Full Screen** option within the tool bar
-- **fix**: Fixed Class 'finfo' not found error appearing on servers without fileinfo extension by adding a fallback function.
-- **fix**: Minor fixes
-
-#### 3.4.3 - 27.09.2022
-- **new**: Added .svg and .yaml file extensions to the editable file extensions option.
-- **new**: Added new filter **wpide_editable_ext_options** to allow adding new extensions to the list by 3rd party.
-- **support**: Support SVG syntax check / highlighting
-- **fix**: Fixed bug with single file upload
-- **fix**: Fixed issue with soft tabs
-- **enhance**: Remove uppercase CSS from breadcrumbs. Replaced "Home" with the name of the root folder. Added a nice drive icon.
-- **enhance**: Faster file load and switching between display types
-- **enhance**: Keep current active file display type after reloading the page
-- **enhance**: Keep current active settings tab after reloading the page
-- **fix**: Fixed WP admin menu scroll glitch
-- **new**: Added right click context menu on folders & files within the file manager and the editor
-- **new**: Added sort dropdown above file manager
-- **update**: File Tree within the File Editor is now sorted by name (asc)
-- **fix**: **Pro** Image Editor | Fixed glitch with revert image function
-- **fix**: Minor fixes
-
-#### 3.4.2 - 05.09.2022
-- **support**: Support windows server / xampp on windows
-- **fix**: Minor CSS fixes
-
-#### 3.4.1 - 17.08.2022
-- **new**: Added append content hash when loading js / css chunks to force cache busting making sure always the latest version is used
-
-#### 3.4 - 16.08.2022
-- **new**: File Editor | Added new Settings tab
-- **new**: File Editor | Added Scroll Speed option
-- **new**: File Editor | Added an option to disable Behaviours, such as auto closing tags and brackets
-- **new**: File Editor | Added option to enable / disable Soft Tabs
-- **new**: File Editor | Using the enter key within the search input will now take you to the next occurrence
-- **new**: File Editor | After selecting text then pressing the Ctrl-F key, the search input will focused and populated with the selected text
-- **new**: File Editor | File Tree | Added file manager action menu for each item.
-- **new**: File Manager | Added new item actions: Create folder, Create file, Duplicate
-- **new**: File Manager | The default zip name, which can be changed within the settings, will only be applied when batch zipping or downloading. For a single item, the item name will be used by default instead.
-- **fix**: Minor fixes
-
-#### 3.3 - 02.08.2022
-- **support**: PHP 8+ Support
-- **support**: To use WPIDE on a lower PHP version, use v2.6 or below.
-- **update**: Updated PHP required version to 7.4.0
-- **update**: Better installation / update handling for the fatal-error-handler.php drop-in to make sure the latest version is always used.
-
-#### 3.2 - 30.07.2022
-- **fix**: Fix corrupt file
-- **fix**: Replace symfony session with transients to avoid session issues with other plugins
-
-#### 3.0 - 30.07.2022
-- **new**: A brand new and completely revamped version of WPIDE.
-
-#### 2.6 - 26.04.2022
-- **update**: Plugin acquired by **XplodedThemes**
-- **update**: A brand new and completely revamped version of WPIDE is coming soon, Stay tuned!
-
-#### 2.5 - 2020.04.13
-- **update**: getting the plugin back to life
-- **update**: started big code cleanup
-- **update**: completely removed experimental Git features
-- **support**: fully compatible with latest WordPress
-
-#### 2.4.0
-- **new**: Context menu option added to file browser to rename, delete, download, zip, unzip!! thanks to shanept https://github.com/shanept for the code behind this.
-- **new**: find+replace
-- **update**: Stopped using the full functionality of sanitize_file_name() and using a cut down version instead that allows period, dash and underscore at the beginning and end of filename.
-- **fix**: corrected invalid regex for determining image type
-- **update**: Changed order of PHP4 compatible constructor in an attempt to stop a PHP Strict Standard error
-- **update**: Update to Ace Editor 1.2.0
-- **update**: Editor settings, so that it’s possible to change the theme and other editor features/behaviours
-- **new**: New application icon in menu bar
-
-#### 2.3.2
-- **update**: Update the Ace component to 1.1.1 which includes some bug fixes, a PHP worker (showing PHP errors as you work) and a greatly improved search box.
-- **fix**: Fixed issue with file save showing javascript alert as if there was a failure when there wasn't
-- **update**: Order folders and files alphabetically
-
-#### 2.3.1
-- **fix**: As a quick fix I have commented out the git functionality as the namespacing used is causing issues with old versions of PHP
-
-#### 2.3
-- **new**: Added initial git functions using the following library: PHP-Stream-Wrapper-for-Git from https://github.com/teqneers/PHP-Stream-Wrapper-for-Git
-- **new**: Initial Git functionality added - it's very experimental!
-
-#### 2.2
-- **new**: Add restore recent backup facility - It's a primitive implementation at this point but it does the job. See FAQ note.
-- **update**: Turned on the LESS mode when a .LESS file is edited
-- **update**: Made the autocomplete functionality only be enabled for PHP files otherwise it can be a pain to write txt files like this one!
-
-#### 2.1
-- **update**: Ramped up the version number because the last one was just getting silly
-- **update**: Interface changes to make the editor take up more screen space. Including hiding the WP admin menu and footer.
-
-#### 2.0.16
-- **fix**: Fixed problem saving PHP documents - PHP-Parser library wasn't included in the codebase correctly
-
-#### 2.0.15
-- **update**: PHP syntax checking before saving to disk (Using: https://github.com/nikic/PHP-Parser)
-
-#### 2.0.14
-- **fix**: Fixed error Warning: Creating default object from empty value in WPIDE.php
-- **update**: Updated the ace editor to current build
-
-#### 2.0.13
-- **new**: Added colour assist - a colour picker that displays when you double click a hex colour code in the editor (see other notes for info).
-- **new**: Added a confirm box to stop you exiting the editor by mistake and losing unsaved changes.
-- **new**: Added 'wpide_filesystem_root' filter (see other notes for info).
-- **update**: A number of bug fixes.
-
-#### 2.0.12
-- **new**: Added links to the WordPress codex and the PHP manual from within the function reference for further info
-
-#### 2.0.11
-- **update**: Newly created files use to contain a space, instead it now defaults to a blank file.
-
-#### 2.0.10
-- **fix**: Fixed a problem with file loading (ajax) indicator not showing.
-
-#### 2.0.9
-- **update**: Upload snapshot of current ajaxorg editor (master/build/src) at 00:30 on the 22 May 2012. Which fixes some issues with selecting big blocks of text, code folding seems better with gutter interface hidden when not in use
-
-#### 2.0.8
-- **support**: Fix browser compatibility issues
-
-#### 2.0.7
-- **update**: Fixing issue with closing tabs not focusing onto next tab once closed.
-- **fix**: Fixed issue with detecting ajax url correctly which was causing all WPIDE ajax requests to fail if WordPress was installed in a subdirectory.
-- **update**: Stopped autocomplete from trying to work when a js/css file is being edited.
-
-#### 2.0.6
-- **update**: Cleaned up the WPIDE class and modified the way the class is passed to WordPress actions/filters.
-
-#### 2.0.5
-- **update**: On startup the editor page now shows extra debugging information for the filesystem API initialization.
-
-#### 2.0.4
-- **update**: On startup the initial editor page now shows some startup info regarding file permissions to help with debugging.
-
-#### 2.0.3
-- **update**: If WPIDE cannot access your files due to permissions then when it starts up it will give you an alert to say this.
-
-#### 2.0.2
-- **new**: Image editing is now available using the SumoPaint image editor and drawing application http://www.sumopaint.com/
-
-#### 2.0.1
-- **new**: You can now create new files/folders
-
-#### 2.0
-- **update**: Recreated this plugin as a dedicated WPIDE section/app rather than extending the built in plugin/theme editor (just incase WP remove it)
-- **update**: Now using the WP filesystem API (although currently restricted to local access)
-- **update**: More security checks on file opening and editing
-- **new**: Added new file tree for exploring the file system and opening files (any file in wp-content)
-- **update**: Massive overhaul to code autocomplete functionality with the addition of function information right in the app
-- **update**: Update the ajaxorg Ace Editor to the current branch
-- **new**: Tabbed editing
-
-#### 1.0.6
-- **new**: Added link to meta section of plugin list for easy install of V2 Dev version if you have dismissed the alert.
-
-#### 1.0.5
-- **new**: Added the facility to download and run the cutting edge development version of WPIDE from the Github repository
-
-#### 1.0.4
-- **new**: Implemented JavaScript and CSS mode for better syntax highlighting and checking
-- **enhance**: Organize and format source code
-
-#### 1.0.2
-- **update**: Tidy and comment code
-- **new**: Added message when backup file is generated
-- **fix**: Adjust code complete dropdown position
-- **enhance**: Improved editor responsiveness when using delete or enter keys
-
-#### 1.0.1
-- **fix**: Fixed "Folder name case" issue.
-
-#### 1.0
-- **initial**: Initial release.
+See the [full changelog](https://plugins.svn.wordpress.org/wpide/trunk/changelog.txt) for detailed release notes and earlier releases.
