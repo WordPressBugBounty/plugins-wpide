@@ -276,6 +276,10 @@ class App
 
     public function canManage(): bool
     {
+        if (is_multisite() && !is_super_admin()) {
+            return false;
+        }
+
         return current_user_can('manage_options');
     }
 
@@ -292,6 +296,9 @@ class App
 
     public function adminMenu()
     {
+        if (!$this->canManage()) {
+            return;
+        }
 
         $menuTopItems = apply_filters('wpide_admin_menu_top_items', [
             [

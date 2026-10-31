@@ -54,8 +54,11 @@ class WPAuth implements Service, AuthInterface
             $user->setHomedir('/'.$wpuser->data->user_login);
         }
 
-        // ...but not for wp admins
-        if (in_array('administrator', (array)$wpuser->roles)) {
+        // ...but not for wp admins (on multisite, only super admins manage WPIDE)
+        if (
+            in_array('administrator', (array)$wpuser->roles)
+            && (!is_multisite() || is_super_admin($wpuser->ID))
+        ) {
             $user->setHomedir('/');
             $user->setRole('admin');
         }

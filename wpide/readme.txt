@@ -3,7 +3,7 @@ Contributors: XplodedThemes
 Tags: file manager, code editor, code snippets, file editor, snippets
 Requires at least: 5.0
 Tested up to: 7.1
-Stable tag: 3.6.1
+Stable tag: 3.6.2
 Requires PHP: 7.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -119,6 +119,10 @@ Some hosts block direct access to PHP files. On Cloudways, users have resolved t
 11. Optimize your media library (available on eligible paid plans).
 
 == Changelog ==
+
+#### V.3.6.2 - 2026-10-31
+- **security**: On multisite, WPIDE and its actions are now limited to super administrators. A subsite administrator could previously get file permissions through the authenticated API and edit network-shared plugin files. Reported by Veer Gosai.
+- **fix**: The Snippet Library's category sidebar now stays on screen while the results scroll, with a slim overlay-style scrollbar for long category lists.
 
 #### V.3.6.1 - 2026-10-30
 - **fix**: Open the file tree and database tables from the mobile editor, with clearer empty states and smoother sidebar transitions.
