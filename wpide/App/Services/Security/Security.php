@@ -47,6 +47,16 @@ class Security implements Service
                 $this->logger->log($message);
                 die;
             }
+
+            // The app only sends JSON, multipart uploads or empty bodies. HTML forms can
+            // also send text/plain and urlencoded bodies, so refuse those as well.
+            if (!$this->isAllowedContentType((string) $this->request->headers->get('Content-Type'))) {
+                $message = "Unsupported content type";
+                $this->response->json($message, 415);
+                $this->response->send();
+                $this->logger->log($message);
+                die;
+            }
         }
 
         if (! empty($config['ip_whitelist'])) $config['ip_allowlist'] = $config['ip_whitelist']; // deprecated, compatibility
@@ -85,5 +95,12 @@ class Security implements Service
             }
         }
 
+    }
+
+    protected function isAllowedContentType(string $contentType): bool
+    {
+        $type = strtolower(trim(explode(';', $contentType)[0]));
+
+        return in_array($type, ['', 'application/json', 'multipart/form-data'], true);
     }
 }

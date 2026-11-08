@@ -3,7 +3,7 @@ Contributors: XplodedThemes
 Tags: file manager, code editor, code snippets, file editor, snippets
 Requires at least: 5.9
 Tested up to: 7.1
-Stable tag: 3.6.4
+Stable tag: 3.6.5
 Requires PHP: 7.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -119,6 +119,9 @@ Some hosts block direct access to PHP files. On Cloudways, users have resolved t
 11. Optimize your media library (available on eligible paid plans).
 
 == Changelog ==
+
+#### V.3.6.5 - 2026-11-08
+- **security**: WPIDE requests that change data now also refuse plain-text and form-encoded bodies, as an extra layer on top of request verification. Suggested by Patchstack.
 
 #### V.3.6.4 - 2026-11-08
 - **security**: Enforced request verification across all WPIDE admin pages to prevent cross-site request forgery. Reported by Greg Otto.
