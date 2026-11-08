@@ -132,6 +132,7 @@ class CodeSnippets extends Importer
             list($type, $location) = self::SCOPES[$scope];
         } else {
             list($type, $location) = $this->guessScope($scope);
+            /* translators: %s: scope name */
             $unsupported[] = sprintf(__('Scope "%s"', 'wpide'), $scope);
         }
 
@@ -141,7 +142,9 @@ class CodeSnippets extends Importer
                 $type = 'universal';
             }
 
+            /* translators: %d: Code Snippets snippet ID */
             $noteLines[] = sprintf(__('Imported from Code Snippets content snippet #%d.', 'wpide'), $id);
+            /* translators: %d: Code Snippets snippet ID */
             $warnings[] = sprintf(__('Pages that use [code_snippet id="%d"] must be changed to use this snippet\'s WPIDE shortcode.', 'wpide'), $id);
             $unsupported[] = __('Per-shortcode options of [code_snippet] (php, format, shortcodes)', 'wpide');
         }
@@ -157,7 +160,9 @@ class CodeSnippets extends Importer
         if ($conditionId > 0) {
             $name = $conditions[$conditionId] ?? '';
             $unsupported[] = $name !== ''
+                /* translators: 1: condition name, 2: condition ID */
                 ? sprintf(__('Code Snippets Pro condition "%1$s" (#%2$d); add equivalent WPIDE conditions', 'wpide'), $name, $conditionId)
+                /* translators: %d: condition ID */
                 : sprintf(__('Code Snippets Pro condition #%d; add equivalent WPIDE conditions', 'wpide'), $conditionId);
         }
 
@@ -181,6 +186,7 @@ class CodeSnippets extends Importer
         $title = trim((string) ($row['name'] ?? ''));
 
         $snippet = [
+            /* translators: %d: Code Snippets snippet ID */
             'title' => $title !== '' ? $title : sprintf(__('Code Snippets #%d', 'wpide'), $id),
             'note' => implode("\n\n", $noteLines),
             'code' => $code,

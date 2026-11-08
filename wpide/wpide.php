@@ -11,9 +11,9 @@
  * Plugin Name: WPIDE - File Manager & Code Editor
  * Plugin URI:  https://wpide.com
  * Description: WordPress file manager and code editor with code snippets, featuring auto-completion of both WordPress and PHP functions with reference, syntax highlighting, line numbers, tabbed editing, automatic backup, image editor & much more!
- * Version:     3.6.2
+ * Version:     3.6.4
  * Requires PHP: 7.4.0
- * Requires at least: 5.0
+ * Requires at least: 5.9
  * Author:      XplodedThemes
  * Author URI:  https://xplodedthemes.com
  * Text Domain: wpide
@@ -31,7 +31,8 @@ $required_php_version = '7.4.0';
 if ( version_compare( PHP_VERSION, $required_php_version, '<' ) ) {
     $class = 'notice notice-error';
     $message = sprintf(
-        __( '%s minimum PHP version requirement is %s. The current PHP version is: %s. Either update the PHP version, or use %s %s or below.', 'wpide' ),
+        /* translators: 1: plugin name, 2: required PHP version, 3: current PHP version, 4: plugin name, 5: last compatible plugin version */
+        __( '%1$s minimum PHP version requirement is %2$s. The current PHP version is: %3$s. Either update the PHP version, or use %4$s %5$s or below.', 'wpide' ),
         '<strong>WPIDE</strong>',
         '<strong>v' . $required_php_version . '</strong>',
         '<strong>v' . PHP_VERSION . '</strong>',
@@ -39,7 +40,9 @@ if ( version_compare( PHP_VERSION, $required_php_version, '<' ) ) {
         '<strong>v2.6</strong>'
     );
     add_action( 'admin_notices', function () use($message, $class) {
-        echo sprintf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), $message );
+        echo sprintf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), wp_kses( $message, [
+            'strong' => [],
+        ] ) );
         deactivate_plugins( __FILE__ );
     } );
 } else {

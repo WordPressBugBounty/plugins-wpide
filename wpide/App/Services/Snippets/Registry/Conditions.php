@@ -490,18 +490,21 @@ class Conditions
 
         foreach ($rules['groups'] as $g => $group) {
             if (!is_array($group)) {
+                /* translators: %d: condition group number */
                 $errors[] = sprintf(__('Condition group %d is invalid.', 'wpide'), $g + 1);
                 continue;
             }
 
             foreach ($group as $r => $row) {
+                /* translators: 1: group number, 2: rule number */
                 $label = sprintf(__('Group %1$d, rule %2$d', 'wpide'), $g + 1, $r + 1);
                 $type = $row['type'] ?? '';
                 $option = $row['option'] ?? '';
                 $relation = $row['relation'] ?? '';
 
                 if (!isset($definitions[$type]['options'][$option])) {
-                    $errors[] = sprintf(__('%s: unknown condition "%s".', 'wpide'), $label, $type . '/' . $option);
+                    /* translators: 1: rule label, 2: condition type and option */
+                    $errors[] = sprintf(__('%1$s: unknown condition "%2$s".', 'wpide'), $label, $type . '/' . $option);
                     continue;
                 }
 
@@ -509,18 +512,22 @@ class Conditions
                 $allowed = self::FIELD_OPERATORS[$definition['field']] ?? ['=', '!='];
 
                 if (!in_array($relation, $allowed, true)) {
-                    $errors[] = sprintf(__('%s: operator "%s" is not supported for this condition.', 'wpide'), $label, $relation);
+                    /* translators: 1: rule label, 2: relation operator */
+                    $errors[] = sprintf(__('%1$s: operator "%2$s" is not supported for this condition.', 'wpide'), $label, $relation);
                 }
 
                 if (!array_key_exists('value', $row) || (!is_scalar($row['value']) && !is_array($row['value']) && $row['value'] !== null)) {
+                    /* translators: %s: rule label */
                     $errors[] = sprintf(__('%s: a value is required.', 'wpide'), $label);
                 }
 
                 if (!empty($definition['meta_key']) && trim((string) ($row[$definition['meta_key']] ?? '')) === '') {
+                    /* translators: %s: rule label */
                     $errors[] = sprintf(__('%s: a meta key is required.', 'wpide'), $label);
                 }
 
                 if (in_array($definition['field'], ['date', 'datetime', 'time'], true) && !is_array($row['value'] ?? null) && strtotime((string) ($row['value'] ?? '')) === false) {
+                    /* translators: %s: rule label */
                     $errors[] = sprintf(__('%s: the date or time is not valid.', 'wpide'), $label);
                 }
             }
@@ -767,7 +774,7 @@ class Conditions
         if (isset($wp->request)) {
             $url = trailingslashit(home_url($wp->request));
         } else {
-            $path = isset($_SERVER['REQUEST_URI']) ? (string) parse_url(wp_unslash($_SERVER['REQUEST_URI']), PHP_URL_PATH) : '/'; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+            $path = isset($_SERVER['REQUEST_URI']) ? (string) wp_parse_url(wp_unslash($_SERVER['REQUEST_URI']), PHP_URL_PATH) : '/'; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
             $url = home_url($path);
         }
 

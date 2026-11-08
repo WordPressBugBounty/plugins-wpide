@@ -84,6 +84,7 @@ class SimpleCustomCssJs extends Importer
         if (!isset($options['language'])) {
             $missing[] = __('Language (CSS assumed)', 'wpide');
         } elseif ($type !== $language) {
+            /* translators: %s: language name */
             $unsupported[] = sprintf(__('Language "%s" (imported as CSS)', 'wpide'), $language);
         }
 
@@ -93,6 +94,7 @@ class SimpleCustomCssJs extends Importer
             $type = 'scss';
             $warnings[] = __('Written in SASS: imported as an SCSS snippet. Check that it compiles.', 'wpide');
         } elseif ($type === 'css' && !in_array($preprocessor, ['', 'none'], true)) {
+            /* translators: %s: preprocessor name */
             $unsupported[] = sprintf(__('Preprocessor "%s" (the code is imported as plain CSS and must be converted)', 'wpide'), $preprocessor);
         }
 
@@ -106,6 +108,7 @@ class SimpleCustomCssJs extends Importer
         $position = strtolower((string) ($options['type'] ?? 'header'));
 
         if (!in_array($position, ['header', 'footer'], true)) {
+            /* translators: %s: position name */
             $unsupported[] = sprintf(__('Position "%s" (imported in the header)', 'wpide'), $position);
             $position = 'header';
         }
@@ -116,6 +119,7 @@ class SimpleCustomCssJs extends Importer
         foreach (array_diff($sides, ['frontend', 'admin']) as $side) {
             $unsupported[] = $side === 'login'
                 ? __('Login page output (WPIDE has no login page location)', 'wpide')
+                /* translators: %s: side name */
                 : sprintf(__('Side "%s"', 'wpide'), $side);
         }
 
@@ -132,6 +136,7 @@ class SimpleCustomCssJs extends Importer
 
         foreach ($options as $key => $value) {
             if (!in_array($key, self::KNOWN_OPTIONS, true) && $value !== '' && $value !== null && $value !== false && $value !== []) {
+                /* translators: %s: setting name */
                 $unsupported[] = sprintf(__('Setting "%s"', 'wpide'), $key);
             }
         }
@@ -143,6 +148,7 @@ class SimpleCustomCssJs extends Importer
         }
 
         $title = trim((string) $post->post_title);
+        /* translators: 1: language (CSS or JS), 2: post ID */
         $title = $title !== '' ? $title : sprintf(__('Custom %1$s #%2$d', 'wpide'), strtoupper($language), $post->ID);
         $targets = array_values(array_intersect(['frontend', 'admin'], $sides));
         $base = [

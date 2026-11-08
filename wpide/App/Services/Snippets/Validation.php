@@ -27,6 +27,7 @@ class Validation
         $type = $snippet['code_type'] ?? '';
 
         if (!Types::exists($type)) {
+            /* translators: %s: code type */
             $errors[] = sprintf(__('Unknown code type "%s".', 'wpide'), $type);
 
             return ['errors' => $errors, 'warnings' => $warnings];
@@ -42,9 +43,11 @@ class Validation
             if ($location === '') {
                 $errors[] = __('Choose where the snippet is inserted, or use it as a shortcode.', 'wpide');
             } elseif (!Locations::exists($location)) {
+                /* translators: %s: location name */
                 $errors[] = sprintf(__('Unknown location "%s".', 'wpide'), $location);
             } else {
                 if (!Locations::acceptsType($location, $type)) {
+                    /* translators: 1: snippet type label, 2: location label */
                     $errors[] = sprintf(__('%1$s snippets cannot use the "%2$s" location.', 'wpide'), Types::get($type)['label'], Locations::label($location));
                 }
 
@@ -58,6 +61,7 @@ class Validation
                     if ($hook === '') {
                         $errors[] = __('Enter the name of the action hook to run on.', 'wpide');
                     } elseif (!Locations::isValidHookName($hook)) {
+                        /* translators: %s: hook name */
                         $errors[] = sprintf(__('"%s" is not a valid hook name.', 'wpide'), $hook);
                     }
                 }
@@ -69,6 +73,7 @@ class Validation
                     if ($selector === '') {
                         $errors[] = __('Enter the CSS selector of the element to target.', 'wpide');
                     } elseif (!Runtime\SelectorInserter::isSupportedSelector($selector)) {
+                        /* translators: %s: CSS selector */
                         $errors[] = sprintf(__('The CSS selector "%s" is not supported. Use tag, #id, .class, [attribute] and descendant/child combinations.', 'wpide'), $selector);
                     }
 
@@ -91,8 +96,10 @@ class Validation
             } elseif ($shortcode === 'wpide_snippet') {
                 $errors[] = __('This shortcode name is reserved.', 'wpide');
             } elseif (Repository::findByShortcode($shortcode, $id)) {
+                /* translators: %s: shortcode name */
                 $errors[] = sprintf(__('Another snippet already uses the shortcode [%s].', 'wpide'), $shortcode);
             } elseif (shortcode_exists($shortcode) && !isset(Manifest::get()['shortcodes'][$shortcode])) {
+                /* translators: %s: shortcode name */
                 $errors[] = sprintf(__('The shortcode [%s] is already registered by WordPress or another plugin.', 'wpide'), $shortcode);
             }
         }
@@ -138,6 +145,7 @@ class Validation
         $locked = Plans::lockedFeatures($snippet);
 
         if ($locked) {
+            /* translators: %s: list of Pro features */
             $warnings[] = sprintf(__('This snippet uses %s, which need WPIDE Pro. That part does not run until Pro is active.', 'wpide'), implode(', ', $locked));
         }
 
@@ -165,6 +173,7 @@ class Validation
             }
 
             // The parser's own message already starts with "Syntax error" for most failures.
+            /* translators: %s: syntax error message */
             return stripos($message, 'syntax error') === 0 ? $message : sprintf(__('Syntax error: %s', 'wpide'), $message);
         }
 

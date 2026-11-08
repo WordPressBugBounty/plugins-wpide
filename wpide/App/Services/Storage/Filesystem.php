@@ -225,13 +225,13 @@ class Filesystem implements Service
     public function storeStreamFromContent(string $path, string $name, $content, bool $overwrite = false): bool
     {
         $stream = tmpfile();
-        fwrite($stream, $content);
+        fwrite($stream, $content); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fwrite -- WP_Filesystem has no stream API; streams keep large files out of memory.
         rewind($stream);
 
         $res = $this->storeStream($path, $name, $stream, $overwrite);
 
         if (is_resource($stream)) {
-            fclose($stream);
+            fclose($stream); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
         }
 
         return $res;

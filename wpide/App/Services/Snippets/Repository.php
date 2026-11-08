@@ -298,7 +298,9 @@ class Repository
 
         $counts = array_map('intval', $row ?: []);
         $pins = Pins::all();
-        $counts['pinned'] = $pins ? (int) $wpdb->get_var("SELECT COUNT(*) FROM $table WHERE status != 'trash' AND id IN (" . implode(',', array_map('intval', $pins)) . ')') : 0; // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        $pins = array_values(array_map('intval', $pins));
+        $placeholders = implode(',', array_fill(0, count($pins), '%d'));
+        $counts['pinned'] = $pins ? (int) $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $table WHERE status != 'trash' AND id IN ($placeholders)", ...$pins)) : 0; // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- one %d placeholder per ID.
 
         return $counts;
     }

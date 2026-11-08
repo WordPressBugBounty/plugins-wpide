@@ -121,6 +121,7 @@ class ContentInserter
                     $paragraph = $boundaries[$n - 1] ?? null;
 
                     if (!$paragraph) {
+                        /* translators: 1: paragraph number, 2: number of paragraphs in the content */
                         self::$skipped[$snippet['id']] = sprintf(__('Paragraph %1$d does not exist (the content has %2$d).', 'wpide'), $n, count($boundaries));
                         break;
                     }
@@ -132,6 +133,7 @@ class ContentInserter
                     $offset = self::offsetAfterWords($boundaries, (int) $snippet['insert_number']);
 
                     if ($offset === null) {
+                        /* translators: %d: minimum number of words */
                         self::$skipped[$snippet['id']] = sprintf(__('The content has fewer than %d words.', 'wpide'), (int) $snippet['insert_number']);
                         break;
                     }

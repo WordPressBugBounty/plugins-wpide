@@ -69,8 +69,8 @@ class PhpFiles
 
         $temp = $file . '.' . uniqid('', true) . '.tmp';
 
-        if (@file_put_contents($temp, $source, LOCK_EX) === false || !@rename($temp, $file)) { // phpcs:ignore WordPress.PHP.NoSilencedErrors
-            @unlink($temp); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+        if (@file_put_contents($temp, $source, LOCK_EX) === false || !@rename($temp, $file)) { // phpcs:ignore WordPress.PHP.NoSilencedErrors, WordPress.WP.AlternativeFunctions.rename_rename -- atomic replace; WP_Filesystem::move() is not atomic.
+            wp_delete_file($temp);
 
             return null;
         }
@@ -78,7 +78,7 @@ class PhpFiles
         // Remove previous versions of this snippet.
         foreach ((array) glob($dir . '/' . (int) $snippet['id'] . '-*.php') as $old) {
             if ($old !== $file) {
-                @unlink($old); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+                wp_delete_file($old);
             }
         }
 
@@ -91,7 +91,7 @@ class PhpFiles
             return false;
         }
 
-        if (!is_writable($dir)) {
+        if (!wp_is_writable($dir)) {
             return false;
         }
 
@@ -116,7 +116,7 @@ class PhpFiles
 
         foreach ((array) glob($pattern) as $file) {
             if (basename($file) !== 'index.php') {
-                @unlink($file); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+                wp_delete_file($file);
             }
         }
     }

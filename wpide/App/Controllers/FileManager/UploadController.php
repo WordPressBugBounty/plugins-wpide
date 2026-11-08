@@ -110,7 +110,7 @@ class UploadController
             return $response->json('Chunk too big', 422);
         }
 
-        $stream = fopen($file->getPathName(), 'r');
+        $stream = fopen($file->getPathName(), 'r'); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- WP_Filesystem has no stream API; streams keep large files out of memory.
 
         $this->tmpfs->write($prefix.$file_name.'.part'.$chunk_number, $stream);
 

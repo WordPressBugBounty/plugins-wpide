@@ -125,13 +125,13 @@ class DownloadController
         // Content-Length set below, clients can then lose the same number of bytes
         // from the end of the file.
         if (headers_sent()) {
-            fclose($file['stream']);
+            fclose($file['stream']); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
             return $response->json('Cannot safely stream file!', 500);
         }
 
         while (ob_get_level() > 0) {
             if (!@ob_end_clean()) {
-                fclose($file['stream']);
+                fclose($file['stream']); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
                 return $response->json('Cannot safely stream file!', 500);
             }
         }
@@ -142,11 +142,12 @@ class DownloadController
 
             if ($file['stream']) {
                 while (! feof($file['stream'])) {
-                    echo fread($file['stream'], 1024 * 8);
+                    // Raw file bytes for a download response; escaping would corrupt the file.
+                    echo fread($file['stream'], 1024 * 8); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.AlternativeFunctions.file_system_operations_fread
                     @ob_flush();
                     @flush();
                 }
-                fclose($file['stream']);
+                fclose($file['stream']); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
             }
             // @codeCoverageIgnoreEnd
         });
@@ -264,11 +265,12 @@ class DownloadController
             @set_time_limit(0);
             if ($file['stream']) {
                 while (! feof($file['stream'])) {
-                    echo fread($file['stream'], 1024 * 8);
+                    // Raw file bytes for a download response; escaping would corrupt the file.
+                    echo fread($file['stream'], 1024 * 8); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.AlternativeFunctions.file_system_operations_fread
                     @ob_flush();
                     @flush();
                 }
-                fclose($file['stream']);
+                fclose($file['stream']); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
             }
             $tmpfs->remove($uniqid);
             // @codeCoverageIgnoreEnd

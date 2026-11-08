@@ -29,6 +29,7 @@ return apply_filters('wpide_config', [
         'advanced_mode' => [
             'type' => 'bool',
             'label' => __('Advanced Mode', 'wpide'),
+            /* translators: 1: opening strong tag, 2: closing strong tag */
             'desc_long' => sprintf(__('When enabled, all files and folders will be available for editing including core wordpress files and the wp-config.php unless they are filtered out manually within the settings. %1$sEnable Advanced Mode at your own risk!%2$s Please note that the %1$sFile Recovery Wizard might not work properly%2$s if you ever save core PHP file that contains errors and break the site. However, backups will still be available, so you can recover corrupted files manually via FTP.', 'wpide'), '<strong class="text-danger">', '</strong>'),
             'default' => false,
             'premium' => true
@@ -114,6 +115,7 @@ return apply_filters('wpide_config', [
         'autosave' => [
             'type' => 'bool',
             'label' => __('Auto save draft', 'wpide'),
+            /* translators: 1: opening span tag, 2: closing span tag */
             'desc_long' => sprintf(__('While editing, files will automatically be saved every X seconds to a temporary draft file. Original files are not affected. If you ever close or refresh the page by mistake without manually saving a file, the next time you open it, a %1$sFile Recovery%2$s modal will display allowing you to restore from the auto saved file. You can also view and compare both files differences using the %1$sQuick Diff Viewer%2$s.', 'wpide'), '<span class="text-primary">', '</span>'),
             'default' => false,
             'premium' => true

@@ -48,6 +48,7 @@ class Manager
         $locked = in_array($source, ['editor', 'library', 'restore'], true) ? Plans::newlyLocked($snippet, $current) : [];
 
         if ($locked) {
+            /* translators: %s: list of Pro features */
             return self::failure([sprintf(__('WPIDE Pro is needed for %s.', 'wpide'), implode(', ', $locked))]) + ['pro_required' => true];
         }
 
@@ -59,6 +60,7 @@ class Manager
             $compiled = Scss::compile($snippet['code']);
 
             if ($compiled['error']) {
+                /* translators: %s: compiler error message */
                 return self::failure([sprintf(__('SCSS error: %s', 'wpide'), $compiled['error'])]);
             }
 
@@ -97,6 +99,7 @@ class Manager
                     Repository::updateMeta($id, ['last_error' => ['message' => $probe, 'phase' => 'activation', 'time' => time()]]);
                 }
 
+                /* translators: %s: error message */
                 return self::failure([sprintf(__('The snippet was not saved as active because it failed when run: %s', 'wpide'), $probe)], $check['warnings']) + ['activation_failed' => true];
             }
         }
@@ -122,6 +125,7 @@ class Manager
         }
 
         if ($willRun && !($current && $current['status'] === 'active')) {
+            /* translators: %s: user display name */
             Events::log($id, 'activated', sprintf(__('Activated by %s', 'wpide'), wp_get_current_user()->display_name ?: __('system', 'wpide')));
         }
 
@@ -155,11 +159,13 @@ class Manager
         if ($probe !== null) {
             Repository::updateMeta($id, ['last_error' => ['message' => $probe, 'phase' => 'activation', 'time' => time()]]);
 
+            /* translators: %s: error message */
             return self::failure([sprintf(__('The snippet was not activated because it failed when run: %s', 'wpide'), $probe)]) + ['activation_failed' => true];
         }
 
         $saved = Repository::update($id, ['status' => 'active'], 'activate');
         Repository::updateMeta($id, ['quarantined' => false, 'last_error' => null]);
+        /* translators: %s: user display name */
         Events::log($id, 'activated', sprintf(__('Activated by %s', 'wpide'), wp_get_current_user()->display_name ?: __('system', 'wpide')));
 
         return ['success' => true, 'snippet' => Repository::find($id), 'warnings' => $check['warnings']];

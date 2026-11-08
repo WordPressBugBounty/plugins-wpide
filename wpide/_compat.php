@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || exit;
+
 if ( ! function_exists( 'str_contains' ) ) {
     /**
      * Polyfill for `str_contains()` function added in PHP 8.0. since WP 5.9.0

@@ -217,6 +217,8 @@ class Packs
 
         $table = Schema::snippetsTable();
 
-        return array_map('intval', $wpdb->get_col("SELECT id FROM $table WHERE status = 'active' AND id IN (" . implode(',', $ids) . ')')); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        $placeholders = implode(',', array_fill(0, count($ids), '%d'));
+
+        return array_map('intval', $wpdb->get_col($wpdb->prepare("SELECT id FROM $table WHERE status = 'active' AND id IN ($placeholders)", ...array_values($ids)))); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- one %d placeholder per ID.
     }
 }

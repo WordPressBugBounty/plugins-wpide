@@ -160,7 +160,7 @@ class User implements \JsonSerializable
     protected function checkValidRole($role)
     {
         if (! in_array($role, $this->available_roles)) {
-            throw new \Exception("User role {$role} does not exists.");
+            throw new \Exception(esc_html("User role {$role} does not exists."));
         }
 
         return true;
@@ -170,7 +170,7 @@ class User implements \JsonSerializable
     {
         foreach ($permissions as $permission) {
             if ($permission && ! in_array($permission, $this->available_permissions)) {
-                throw new \Exception("Permission {$permission} does not exists.");
+                throw new \Exception(esc_html("Permission {$permission} does not exists."));
             }
         }
 

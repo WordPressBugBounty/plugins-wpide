@@ -44,7 +44,7 @@ class PhpValidator
 
             if (!empty($duplicates)) {
                 $constant = array_shift($duplicates);
-                throw new Exception('Constant ' . $constant . ' already defined!');
+                throw new Exception(esc_html('Constant ' . $constant . ' already defined!'));
             }
         }
     }

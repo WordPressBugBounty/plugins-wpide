@@ -174,9 +174,11 @@ class Plans {
         $locked = [];
         $type = (string) ($snippet['code_type'] ?? '');
         if ( Types::isPro( $type ) ) {
+            /* translators: %s: snippet type label */
             $locked[] = sprintf( __( '%s snippets', 'wpide' ), Types::get( $type )['label'] ?? $type );
         }
         if ( ($snippet['insert_method'] ?? 'auto') === 'auto' && Locations::isPro( (string) ($snippet['location'] ?? '') ) ) {
+            /* translators: %s: location label */
             $locked[] = sprintf( __( 'the "%s" location', 'wpide' ), Locations::label( (string) $snippet['location'] ) );
         }
         if ( !empty( $snippet['use_conditions'] ) ) {
@@ -184,6 +186,7 @@ class Plans {
                 foreach ( (array) $group as $row ) {
                     $option = (string) ($row['option'] ?? '');
                     if ( Conditions::isPro( $option ) ) {
+                        /* translators: %s: condition label */
                         $locked[] = sprintf( __( 'the "%s" condition', 'wpide' ), Conditions::label( $option ) );
                     }
                 }

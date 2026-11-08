@@ -23,7 +23,7 @@ abstract class Task
     public static function dispatch($args): array
     {
         if(!function_exists('as_enqueue_async_action')) {
-            throw new Exception('Cannot dispatch '.self::name().' task! Action Scheduler library was not found!');
+            throw new Exception(esc_html('Cannot dispatch '.self::name().' task! Action Scheduler library was not found!'));
         }
 
         $task_id = uniqid();

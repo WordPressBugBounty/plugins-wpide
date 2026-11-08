@@ -155,6 +155,7 @@ abstract class Importer
         $location = $item['snippet']['location'] ?? '';
 
         if (($item['snippet']['insert_method'] ?? 'auto') === 'auto' && $location !== '' && !Locations::exists($location)) {
+            /* translators: %s: location name */
             $item['unsupported'][] = sprintf(__('Location "%s"', 'wpide'), $location);
         }
 

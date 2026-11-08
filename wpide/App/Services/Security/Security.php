@@ -6,7 +6,6 @@ use WPIDE\App\Kernel\Request;
 use WPIDE\App\Kernel\Response;
 use WPIDE\App\Services\Service;
 use WPIDE\App\Services\Logger\LoggerInterface;
-use const WPIDE\Constants\SLUG;
 
 /**
  * @codeCoverageIgnore
@@ -28,20 +27,20 @@ class Security implements Service
 
     public function init(array $config = [])
     {
-        if(wp_doing_cron() || defined('WPIDE_DOING_TASK') || ! $this->isProtectedRequest()) {
+        if(wp_doing_cron() || defined('WPIDE_DOING_TASK')) {
             return;
         }
 
-        $nonce = wp_create_nonce();
-
+        // This service runs only inside App::bootstrap(), before the router dispatches.
+        // Protect every entry point, including filtered submenu slugs and AJAX requests.
         $http_method = $this->request->getMethod();
 
         if (in_array($http_method, ['GET', 'HEAD', 'OPTIONS'])) {
-            $this->response->headers->set('X-CSRF-Token', $nonce);
+            $this->response->headers->set('X-CSRF-Token', wp_create_nonce('wpide_request'));
         } else {
             $nonce = $this->request->headers->get('X-CSRF-Token');
 
-            if (wp_verify_nonce($nonce) === false) {
+            if (wp_verify_nonce($nonce, 'wpide_request') === false) {
                 $message = "Csrf token not valid";
                 $this->response->json($message, 403);
                 $this->response->send();
@@ -86,15 +85,5 @@ class Security implements Service
             }
         }
 
-    }
-
-    protected function isProtectedRequest(): bool
-    {
-        if(wp_doing_ajax()) {
-            return true;
-        }
-
-        return $this->request->query->get('page') === SLUG
-            && $this->request->query->has('req');
     }
 }

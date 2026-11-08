@@ -139,6 +139,7 @@ class FileController
         $path = $request->input('destination', $this->transient->get(self::SESSION_CWD, $this->separator));
 
         if(empty($name)) {
+            /* translators: %s: item type (file or folder) */
             return $response->json(sprintf(__('%s name cannot be empty!', 'wpide'), ucfirst($type)), 422);
         }
 

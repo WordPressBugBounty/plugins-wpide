@@ -213,7 +213,7 @@ class App
     {
 
         if(!empty($this->dependencyNotice)) {
-            echo $this->dependencyNotice;
+            echo wp_kses_post($this->dependencyNotice);
         }
 
         // Perform checks here
@@ -245,7 +245,7 @@ class App
 
             // When network active, If trying to load plugin admin url, redirect back to network root
             if(!$this->showAdminMenu() && !$this->isFreemiusScreen() && !Freemius::sdk()->is_activation_mode() && !Freemius::showSubmenus()) {
-                wp_redirect(network_admin_url());
+                wp_safe_redirect(network_admin_url());
                 die();
             }
 
@@ -504,7 +504,7 @@ class App
         }
 
         if(!empty($_GET['page'])) {
-            $page = sanitize_text_field($_GET['page']);
+            $page = sanitize_text_field(wp_unslash($_GET['page'])); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only screen detection.
             return strpos($page, $slug) !== false;
         }
 
@@ -592,9 +592,9 @@ class App
      */
     public function addAdminFavicon () {
 
-        echo '<link rel="shortcut icon" type="image/svg+xml" href="' . ASSETS_URL. '/img/favicon.svg">',"\n";
-        echo '<link rel="shortcut icon" type="image/x-icon" href="' . ASSETS_URL. '/img/favicon.ico">',"\n";
-        echo '<link rel="shortcut icon" type="image/png" href="' . ASSETS_URL. '/img/favicon.png">',"\n";
+        echo '<link rel="shortcut icon" type="image/svg+xml" href="' . esc_url(ASSETS_URL . '/img/favicon.svg') . '">',"\n";
+        echo '<link rel="shortcut icon" type="image/x-icon" href="' . esc_url(ASSETS_URL . '/img/favicon.ico') . '">',"\n";
+        echo '<link rel="shortcut icon" type="image/png" href="' . esc_url(ASSETS_URL . '/img/favicon.png') . '">',"\n";
         echo '<meta name="theme-color" content="#ffffff">',"\n";
     }
 

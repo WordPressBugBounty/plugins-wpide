@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || exit;
+
 use WPIDE\App\AppConfig;
 use const WPIDE\Constants\CONTENT_DIR;
 

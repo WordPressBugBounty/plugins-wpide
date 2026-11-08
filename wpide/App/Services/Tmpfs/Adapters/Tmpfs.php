@@ -14,10 +14,10 @@ class Tmpfs implements Service, TmpfsInterface
         $this->path = $config['path'];
 
         if (! is_dir($this->path)) {
-            mkdir($this->path);
+            wp_mkdir_p($this->path);
         }
 
-        if (mt_rand(0, 99) < $config['gc_probability_perc']) {
+        if (wp_rand(0, 99) < $config['gc_probability_perc']) {
             $this->clean($config['gc_older_than']);
         }
     }
@@ -53,7 +53,7 @@ class Tmpfs implements Service, TmpfsInterface
     {
         $filename = $this->sanitizeFilename($filename);
 
-        $stream = fopen($this->getPath().$filename, 'r');
+        $stream = fopen($this->getPath().$filename, 'r'); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- WP_Filesystem has no stream API; streams keep large files out of memory.
         $filesize = filesize($this->getPath().$filename);
 
         return [
@@ -93,7 +93,9 @@ class Tmpfs implements Service, TmpfsInterface
     {
         $filename = $this->sanitizeFilename($filename);
 
-        return unlink($this->getPath().$filename);
+        wp_delete_file($this->getPath().$filename);
+
+        return !file_exists($this->getPath().$filename);
     }
 
     public function clean(int $older_than)

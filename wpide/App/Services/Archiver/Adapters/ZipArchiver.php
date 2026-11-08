@@ -132,7 +132,7 @@ class ZipArchiver implements Service, ArchiverInterface
                 $storage->storeStream($destination.'/'.$item['dirname'], $item['basename'], $stream);
             }
             if (is_resource($stream)) {
-                fclose($stream);
+                fclose($stream); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
             }
         }
 
@@ -164,7 +164,7 @@ class ZipArchiver implements Service, ArchiverInterface
 
         $this->storage->storeStream($destination, $name, $file['stream']);
         if (is_resource($file['stream'])) {
-            fclose($file['stream']);
+            fclose($file['stream']); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
         }
 
         $this->tmpfs->remove($this->uniqid);

@@ -224,13 +224,13 @@ class PromoNotice {
     public static function ajaxPromoDismissAction() {
 
         // Continue only if the nonce is correct
-        $nonce = sanitize_text_field($_REQUEST['_nonce']);
+        $nonce = isset($_REQUEST['_nonce']) ? sanitize_text_field(wp_unslash($_REQUEST['_nonce'])) : '';
 
         if ( ! wp_verify_nonce( $nonce, App::instance()->prefix('promo_dismiss_nonce') ) ) {
             wp_send_json_error();
         }
 
-        $id = sanitize_text_field($_POST['params']['id']);
+        $id = isset($_POST['params']['id']) ? sanitize_text_field(wp_unslash($_POST['params']['id'])) : '';
 
         $dismissed = self::dismissPromo($id);
 
@@ -279,16 +279,20 @@ class PromoNotice {
             'id' => $promo->id
         ];
 
-        $dataParams = htmlspecialchars(json_encode($params), ENT_QUOTES, 'UTF-8');
+        $dataParams = wp_json_encode($params);
 
         ?>
         <div class="notice notice-info wpide-notice" data-slug="<?php echo esc_attr(SLUG); ?>">
-            <p><?php echo sprintf(esc_html__("Hey %s, %s is LIVE until %s!", "wpide"), $first_name, '<strong>' . $promo->name . '</strong>', '<strong>' . $endDate . '</strong>'); ?>
-            <p><?php echo sprintf(esc_html__('Get %s OFF on a %s license using this coupon: %s', "wpide"), "<strong>$promo->discount</strong>", "<strong>".NAME."</strong>", "<strong>$promo->coupon</strong>"); ?></p>
-            <ul class="wpide-notice-action" data-action="<?php echo esc_attr($action);?>" data-nonce="<?php echo wp_create_nonce( App::instance()->prefix('promo_dismiss_nonce') ) ?>">
+            <p><?php
+                /* translators: 1: user first name, 2: promotion name, 3: promotion end date */
+                echo wp_kses(sprintf(esc_html__('Hey %1$s, %2$s is LIVE until %3$s!', "wpide"), esc_html($first_name), '<strong>' . esc_html($promo->name) . '</strong>', '<strong>' . esc_html($endDate) . '</strong>'), ['strong' => []]); ?>
+            <p><?php
+                /* translators: 1: discount amount, 2: plugin name, 3: coupon code */
+                echo wp_kses(sprintf(esc_html__('Get %1$s OFF on a %2$s license using this coupon: %3$s', "wpide"), '<strong>' . esc_html($promo->discount) . '</strong>', '<strong>' . esc_html(NAME) . '</strong>', '<strong>' . esc_html($promo->coupon) . '</strong>'), ['strong' => []]); ?></p>
+            <ul class="wpide-notice-action" data-action="<?php echo esc_attr($action);?>" data-nonce="<?php echo esc_attr(wp_create_nonce( App::instance()->prefix('promo_dismiss_nonce') )) ?>">
                 <li><span class="dashicons dashicons-thumbs-up"></span> <a href="<?php echo esc_url(Freemius::sdk()->get_upgrade_url());?>"><?php echo esc_html__( 'Upgrade', 'wpide' ) ?></a></li>
                 <li><span class="dashicons dashicons-products"></span> <a target="_blank" href="<?php echo esc_url(App::instance()->getExternalUrl('promo-notice', AUTHOR_URL.'/plugins'));?>"><?php echo esc_html__( 'More Products', 'wpide' ) ?></a></li>
-                <li><span class="dashicons dashicons-dismiss"></span> <a data-action="dismiss" data-params="<?php echo $dataParams;?>" href="#"><?php echo esc_html__( 'Dismiss', 'wpide' ) ?></a></li>
+                <li><span class="dashicons dashicons-dismiss"></span> <a data-action="dismiss" data-params="<?php echo esc_attr($dataParams);?>" href="#"><?php echo esc_html__( 'Dismiss', 'wpide' ) ?></a></li>
             </ul>
         </div>
         <?php

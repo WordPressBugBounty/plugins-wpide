@@ -1,9 +1,9 @@
 === WPIDE - File Manager & Code Editor ===
 Contributors: XplodedThemes
 Tags: file manager, code editor, code snippets, file editor, snippets
-Requires at least: 5.0
+Requires at least: 5.9
 Tested up to: 7.1
-Stable tag: 3.6.2
+Stable tag: 3.6.4
 Requires PHP: 7.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -119,6 +119,11 @@ Some hosts block direct access to PHP files. On Cloudways, users have resolved t
 11. Optimize your media library (available on eligible paid plans).
 
 == Changelog ==
+
+#### V.3.6.4 - 2026-11-08
+- **security**: Enforced request verification across all WPIDE admin pages to prevent cross-site request forgery. Reported by Greg Otto.
+- **security**: Hardened output escaping, request input sanitization, SQL placeholders and direct file access protection following a WordPress Plugin Check review.
+- **update**: WPIDE now requires WordPress 5.9 or newer, matching the WordPress functions it uses.
 
 #### V.3.6.2 - 2026-10-31
 - **security**: On multisite, WPIDE and its actions are now limited to super administrators. A subsite administrator could previously get file permissions through the authenticated API and edit network-shared plugin files. Reported by Veer Gosai.

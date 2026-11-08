@@ -144,6 +144,7 @@ class Woody extends Importer
         $type = self::TYPES[$sourceType] ?? $sourceType;
 
         if (!isset(self::TYPES[$sourceType])) {
+            /* translators: %s: snippet type */
             $unsupported[] = sprintf(__('Snippet type "%s"', 'wpide'), $sourceType);
         }
 
@@ -175,6 +176,7 @@ class Woody extends Importer
         $number = max(1, (int) $this->meta($id, 'snippet_p_number', 1));
 
         $snippet = [
+            /* translators: %d: Woody snippet ID */
             'title' => trim((string) $post->post_title) !== '' ? trim((string) $post->post_title) : sprintf(__('Woody snippet #%d', 'wpide'), $id),
             'note' => trim(wp_strip_all_tags((string) $this->meta($id, 'snippet_description', ''))),
             'code' => $code,
@@ -202,15 +204,18 @@ class Woody extends Importer
                 $snippet['location'] = 'site_wide_header';
             } else {
                 $snippet['insert_method'] = 'shortcode';
+                /* translators: %s: location name */
                 $unsupported[] = sprintf(__('Location "%s" (imported as shortcode only)', 'wpide'), $sourceLocation);
             }
         } else {
             if ($scope !== 'shortcode') {
+                /* translators: %s: scope name */
                 $unsupported[] = sprintf(__('Scope "%s" (imported as shortcode only)', 'wpide'), $scope);
             }
 
             $snippet['insert_method'] = 'shortcode';
-            $warnings[] = sprintf(__('Content that uses Woody\'s shortcode for snippet %d (for example [wbcr_php_snippet id="%d"]) must be changed to use this snippet\'s WPIDE shortcode.', 'wpide'), $id, $id);
+            /* translators: 1: Woody snippet ID, 2: Woody snippet ID (same, used in the shortcode example) */
+            $warnings[] = sprintf(__('Content that uses Woody\'s shortcode for snippet %1$d (for example [wbcr_php_snippet id="%2$d"]) must be changed to use this snippet\'s WPIDE shortcode.', 'wpide'), $id, $id);
 
             if (in_array($type, ['php', 'universal'], true)) {
                 $missing[] = __('Shortcode attribute names (Woody passes any attribute; declare the ones the code uses)', 'wpide');
@@ -300,6 +305,7 @@ class Woody extends Importer
                 if ($mapped === null) {
                     $param = is_array($row) ? (string) ($row['param'] ?? '?') : '?';
                     $operator = is_array($row) ? (string) ($row['operator'] ?? '') : '';
+                    /* translators: 1: condition parameter, 2: operator */
                     $unsupported[] = sprintf(__('Condition "%1$s %2$s" (left out, so the remaining conditions of its group are broader)', 'wpide'), $param, $operator);
                     continue;
                 }

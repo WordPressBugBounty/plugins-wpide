@@ -83,7 +83,7 @@ class WPFileSystem extends AbstractAdapter
         $this->ensureDirectory($root);
 
         if ( ! $this->fs->is_dir($root) || ! $this->fs->is_readable($root)) {
-            throw new LogicException('The root path ' . $root . ' is not readable.');
+            throw new LogicException(esc_html('The root path ' . $root . ' is not readable.'));
         }
 
         $this->setPathPrefix($root);
@@ -127,7 +127,7 @@ class WPFileSystem extends AbstractAdapter
 
             if ( ! $this->fs->is_dir($root)) {
                 $errorMessage = isset($mkdirError['message']) ? $mkdirError['message'] : '';
-                throw new Exception(sprintf('Impossible to create the root directory "%s". %s', $root, $errorMessage));
+                throw new Exception(esc_html(sprintf('Impossible to create the root directory %s. %s', $root, $errorMessage)));
             }
         }
     }
@@ -177,9 +177,9 @@ class WPFileSystem extends AbstractAdapter
         $path = $this->getRelativePath( $path );
         $location = $this->applyPathPrefix($path);
         $this->ensureDirectory(dirname($location));
-        $stream = @fopen($location, 'w+b');
+        $stream = @fopen($location, 'w+b'); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- WP_Filesystem has no stream API; streams keep large files out of memory.
 
-        if ( ! $stream || stream_copy_to_stream($resource, $stream) === false || ! fclose($stream)) {
+        if ( ! $stream || stream_copy_to_stream($resource, $stream) === false || ! fclose($stream)) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
             return false;
         }
 
@@ -201,7 +201,7 @@ class WPFileSystem extends AbstractAdapter
     {
         $path = $this->getRelativePath( $path );
         $location = $this->applyPathPrefix($path);
-        $stream = @fopen($location, 'rb');
+        $stream = @fopen($location, 'rb'); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- WP_Filesystem has no stream API; streams keep large files out of memory.
 
         return ['type' => 'file', 'path' => $path, 'stream' => $stream];
     }
@@ -497,7 +497,7 @@ class WPFileSystem extends AbstractAdapter
         }
 
         if ($this->linkHandling & self::DISALLOW_LINKS) {
-            throw NotSupportedException::forLink($file);
+            throw NotSupportedException::forLink($file); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Flysystem exception, never echoed; API errors are returned as JSON.
         }
     }
 
@@ -570,7 +570,7 @@ class WPFileSystem extends AbstractAdapter
     protected function guardAgainstUnreadableFileInfo(SplFileInfo $file)
     {
         if ( ! $file->isReadable()) {
-            throw UnreadableFileException::forFileInfo($file);
+            throw UnreadableFileException::forFileInfo($file); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Flysystem exception, never echoed; API errors are returned as JSON.
         }
     }
 }

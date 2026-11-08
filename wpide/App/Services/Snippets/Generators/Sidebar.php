@@ -43,6 +43,7 @@ class Sidebar extends Generator
                         'id' => 'sidebars',
                         'type' => 'repeater',
                         'label' => __('Widget areas', 'wpide'),
+                        /* translators: 1: widget id placeholder, 2: widget classes placeholder */
                         'description' => __('Show an area in your theme with dynamic_sidebar( \'id\' ). %1$s and %2$s in the widget wrapper are replaced by the widget id and classes.', 'wpide'),
                         'default' => [
                             [

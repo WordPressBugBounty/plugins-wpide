@@ -54,6 +54,7 @@ trait WPCodeMapping
         $unsupported = [];
 
         if (!Types::exists($type)) {
+            /* translators: %s: code type */
             $unsupported[] = sprintf(__('Code type "%s"', 'wpide'), $type);
         }
 

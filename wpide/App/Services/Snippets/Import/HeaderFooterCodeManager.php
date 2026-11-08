@@ -97,6 +97,7 @@ class HeaderFooterCodeManager extends Importer
         $type = self::TYPES[$sourceType] ?? 'html';
 
         if (!isset(self::TYPES[$sourceType])) {
+            /* translators: %s: snippet type */
             $unsupported[] = sprintf(__('Snippet type "%s" (imported as HTML)', 'wpide'), $sourceType);
         }
 
@@ -111,6 +112,7 @@ class HeaderFooterCodeManager extends Importer
         $sourceLocation = (string) ($row['location'] ?? '');
 
         $snippet = [
+            /* translators: %d: HFCM snippet ID */
             'title' => trim((string) ($row['name'] ?? '')) !== '' ? trim((string) $row['name']) : sprintf(__('HFCM snippet #%d', 'wpide'), $id),
             'code' => $code,
             'code_type' => $type,
@@ -123,6 +125,7 @@ class HeaderFooterCodeManager extends Importer
         ];
 
         if (!isset(self::DEVICES[$device])) {
+            /* translators: %s: device name */
             $unsupported[] = sprintf(__('Device "%s"', 'wpide'), $device);
         }
 
@@ -132,8 +135,10 @@ class HeaderFooterCodeManager extends Importer
 
             if (preg_match('/^[a-z0-9_-]{1,64}$/', $name) && !shortcode_exists($name)) {
                 $snippet['shortcode'] = $name;
+                /* translators: 1: HFCM snippet ID, 2: WPIDE shortcode */
                 $warnings[] = sprintf(__('Content that uses [hfcm id="%1$d"] must be changed to [%2$s].', 'wpide'), $id, $name);
             } else {
+                /* translators: %d: HFCM snippet ID */
                 $warnings[] = sprintf(__('Content that uses [hfcm id="%d"] must be changed to use this snippet\'s WPIDE shortcode.', 'wpide'), $id);
             }
         } else {
@@ -141,6 +146,7 @@ class HeaderFooterCodeManager extends Importer
                 $snippet['location'] = self::LOCATIONS[$sourceLocation];
             } else {
                 $snippet['insert_method'] = 'shortcode';
+                /* translators: %s: location name */
                 $unsupported[] = sprintf(__('Location "%s" (imported as shortcode only)', 'wpide'), $sourceLocation);
             }
 
@@ -252,12 +258,14 @@ class HeaderFooterCodeManager extends Importer
             case 'latest_posts':
                 $count = (int) ($row['lp_count'] ?? 0);
                 $unsupported[] = $count > 0
+                    /* translators: %d: number of posts */
                     ? sprintf(__('Display on the %d latest posts only (imported as: all single posts)', 'wpide'), $count)
                     : __('Display on the latest posts only (imported as: all single posts)', 'wpide');
 
                 return [[$this->rule('type_of_page', '=', 'is_single'), $this->rule('post_type', '=', 'post')]];
         }
 
+        /* translators: %s: display rule name */
         $unsupported[] = sprintf(__('Site display rule "%s" (imported as shortcode only)', 'wpide'), $display);
 
         return null;

@@ -80,6 +80,7 @@ class AdminBar
 
             foreach (array_slice($executed, 0, 20) as $id) {
                 $snippet = $snippets[$id] ?? null;
+                /* translators: %d: snippet ID */
                 $label = $snippet && $snippet['title'] !== '' ? $snippet['title'] : sprintf(__('Snippet #%d', 'wpide'), $id);
 
                 $bar->add_node([

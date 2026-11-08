@@ -136,7 +136,7 @@ class PublicLibrary
         $identity = self::identity();
 
         if (!$identity) {
-            throw new LibraryException(__('Connect this site to WPIDE first: open WPIDE > Account and allow the connection (it uses your email address, no password). Free sites can connect too.', 'wpide'), 0, 'not_registered');
+            throw new LibraryException(esc_html__('Connect this site to WPIDE first: open WPIDE > Account and allow the connection (it uses your email address, no password). Free sites can connect too.', 'wpide'), 0, 'not_registered');
         }
 
         $raw = $body === null ? '' : (string) wp_json_encode($body);
@@ -165,16 +165,18 @@ class PublicLibrary
     public static function decode($response): array
     {
         if (is_wp_error($response)) {
-            throw new LibraryException(sprintf(__('WPIDE Cloud could not be reached: %s', 'wpide'), $response->get_error_message()), 0, 'unreachable');
+            /* translators: %s: connection error message */
+            throw new LibraryException(esc_html(sprintf(__('WPIDE Cloud could not be reached: %s', 'wpide'), $response->get_error_message())), 0, 'unreachable');
         }
 
         $status = (int) wp_remote_retrieve_response_code($response);
         $data = json_decode((string) wp_remote_retrieve_body($response), true);
 
         if ($status < 200 || $status >= 300) {
-            $message = is_array($data) && !empty($data['message']) ? $data['message'] : sprintf(__('WPIDE Cloud returned an error (%d).', 'wpide'), $status);
+            /* translators: %d: HTTP status code */
+            $message = is_array($data) && !empty($data['message']) ? (string) $data['message'] : sprintf(__('WPIDE Cloud returned an error (%d).', 'wpide'), $status);
 
-            throw new LibraryException($message, $status, is_array($data) ? (string) ($data['error'] ?? '') : '');
+            throw new LibraryException(esc_html($message), (int) $status, esc_html(is_array($data) ? (string) ($data['error'] ?? '') : ''));
         }
 
         return is_array($data) ? $data : [];
@@ -218,7 +220,7 @@ class PublicLibrary
         $snippet = Repository::find($snippetId);
 
         if (!$snippet) {
-            throw new LibraryException(__('Snippet not found.', 'wpide'));
+            throw new LibraryException(esc_html__('Snippet not found.', 'wpide'));
         }
 
         $entry = [
@@ -294,7 +296,8 @@ class PublicLibrary
         } catch (LibraryException $e) {
             // A cloud without the public library (an older or wrong address) answers 404 for the route itself.
             if ((int) $e->getCode() === 404) {
-                throw new LibraryException(sprintf(__('The WPIDE library is not available at %s yet. Try again later.', 'wpide'), self::cloudUrl()), 404, 'library_unavailable');
+                /* translators: %s: WPIDE Cloud URL */
+                throw new LibraryException(esc_html(sprintf(__('The WPIDE library is not available at %s yet. Try again later.', 'wpide'), self::cloudUrl())), 404, 'library_unavailable');
             }
 
             throw $e;
@@ -331,7 +334,7 @@ class PublicLibrary
             wp_die(esc_html__('You need access to WPIDE snippets to sign in to the library.', 'wpide'), '', ['response' => 403]);
         }
 
-        $state = isset($_GET['state']) ? preg_replace('/[^A-Za-z0-9_-]/', '', (string) wp_unslash($_GET['state'])) : '';
+        $state = isset($_GET['state']) ? preg_replace('/[^A-Za-z0-9_-]/', '', sanitize_text_field(wp_unslash($_GET['state']))) : '';
         $return = isset($_GET['return']) ? esc_url_raw(wp_unslash($_GET['return'])) : '';
         $website = self::website();
 
@@ -354,6 +357,7 @@ class PublicLibrary
 
         $host = wp_parse_url($website, PHP_URL_HOST);
         $form = '<h1>' . esc_html__('Sign in to the WPIDE library', 'wpide') . '</h1>'
+            /* translators: 1: site name, 2: site URL */
             . '<p>' . sprintf(esc_html__('%1$s asks to sign you in with this site (%2$s). Snippets you publish there will show the name on this site\'s WPIDE account.', 'wpide'), '<strong>' . esc_html($host) . '</strong>', esc_html(home_url())) . '</p>';
 
         if (!self::identity()) {

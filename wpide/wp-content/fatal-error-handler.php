@@ -8,6 +8,10 @@
  * handler object), its recovery mode and the 500 response, and other plugins' handlers keep working.
 */
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 if (!class_exists('WPIDE_Error_Handler')) {
 
     class WPIDE_Error_Handler
@@ -72,7 +76,7 @@ if (!class_exists('WPIDE_Error_Handler')) {
                     $success = self::recoverFile($error_file, $backup_file);
 
                     if(file_exists($lockfile)) {
-                        @unlink($lockfile);
+                        self::deleteFile($lockfile);
                     }
 
                     wp_send_json([
@@ -164,9 +168,20 @@ if (!class_exists('WPIDE_Error_Handler')) {
             return $result !== false;
         }
 
+        protected static function deleteFile($file)
+        {
+            // A fatal error can occur before WordPress loads wp_delete_file().
+            if (function_exists('wp_delete_file')) {
+                wp_delete_file($file);
+            } else {
+                @unlink($file); // phpcs:ignore WordPress.WP.AlternativeFunctions.unlink_unlink -- fallback when WordPress is not fully loaded.
+            }
+        }
+
         protected static function escape($value): string
         {
-            return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+            // A fatal error can occur before WordPress loads its formatting functions.
+            return function_exists('esc_html') ? esc_html((string) $value) : htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
         }
 
         public static function recoverTemplate($error_type, $error_message, $error_file, $error_line, $backup_file)
@@ -176,16 +191,16 @@ if (!class_exists('WPIDE_Error_Handler')) {
             <div class="container">
                 <div class="error">
                     <div class="error-inner">
-                        <h2><?php echo self::escape($error_type); ?></h2>
+                        <h2><?php echo self::escape($error_type); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by self::escape(). ?></h2>
                         <h3>Ooh-oh, something went wrong after modifying this file:</h3>
                         <p class="error-file">
                             <code><strong>File</strong>
-                                <span><?php echo self::escape(str_replace(__DIR__, "", $error_file)); ?></span></code>
+                                <span><?php echo self::escape(str_replace(__DIR__, "", $error_file)); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by self::escape(). ?></span></code>
                             <code class="error-message"><strong>Error</strong>
-                                <span><?php echo self::escape($error_message); ?></span></code>
+                                <span><?php echo self::escape($error_message); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by self::escape(). ?></span></code>
                             <code><strong>Line</strong> <span><?php echo (int) $error_line; ?></span></code>
                             <code><strong>Backup</strong>
-                                <span><?php echo self::escape(str_replace(__DIR__, "", $backup_file)); ?></span></code>
+                                <span><?php echo self::escape(str_replace(__DIR__, "", $backup_file)); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by self::escape(). ?></span></code>
                         </p>
                         <p class="recovering-message">
                             <strong>WPIDE</strong> will try to recover the file for you using the latest saved backup!
@@ -688,7 +703,7 @@ if (!class_exists('WPIDE_Error_Handler')) {
                         return;
                     }
                     recoverBtn.classList.add("loading");
-                    const recoverUrl = '<?php echo add_query_arg('recover', 1, admin_url('admin.php?page=' . self::$slug . '-filemanager'));?>';
+                    const recoverUrl = '<?php echo esc_js(esc_url_raw(add_query_arg('recover', 1, admin_url('admin.php?page=' . self::$slug . '-filemanager'))));?>';
                     fetch(recoverUrl)
                         .then(response => response.json())
                         .then(data => {

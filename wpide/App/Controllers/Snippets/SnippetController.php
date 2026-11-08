@@ -2,6 +2,8 @@
 
 namespace WPIDE\App\Controllers\Snippets;
 
+defined( 'ABSPATH' ) || exit;
+
 use WPIDE\App\Kernel\Request;
 use WPIDE\App\Kernel\Response;
 use WPIDE\App\Services\Snippets\Capabilities;

@@ -26,7 +26,7 @@ class Events
         ]);
 
         // Keep the table bounded without a cron job.
-        if (mt_rand(1, 50) === 1) {
+        if (wp_rand(1, 50) === 1) {
             self::prune();
         }
     }
@@ -80,7 +80,7 @@ class Events
         global $wpdb;
 
         $table = Schema::eventsTable();
-        $threshold = (int) $wpdb->get_var("SELECT id FROM $table ORDER BY id DESC LIMIT 1 OFFSET " . self::MAX_ROWS); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        $threshold = (int) $wpdb->get_var($wpdb->prepare("SELECT id FROM $table ORDER BY id DESC LIMIT 1 OFFSET %d", self::MAX_ROWS)); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
         if ($threshold) {
             $wpdb->query($wpdb->prepare("DELETE FROM $table WHERE id <= %d", $threshold)); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared

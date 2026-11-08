@@ -192,10 +192,12 @@ class PostSnippets extends Importer
         list($attributes, $defaults, $renamed) = $this->variables($record['vars']);
 
         if ($defaults) {
+            /* translators: %s: list of default variable values */
             $unsupported[] = sprintf(__('Default variable values (%s); attributes now default to empty', 'wpide'), implode(', ', $defaults));
         }
 
         foreach ($renamed as $from => $to) {
+            /* translators: 1: original variable name, 2: new variable name */
             $warnings[] = sprintf(__('Variable "%1$s" is renamed to "%2$s" (shortcode attributes are lowercase).', 'wpide'), $from, $to);
         }
 
@@ -203,6 +205,7 @@ class PostSnippets extends Importer
             // Post Snippets makes variables available to PHP code; in WPIDE declared attributes are PHP variables too.
             foreach (array_keys($attributes) as $original) {
                 if (strpos($code, '{' . $original . '}') !== false) {
+                    /* translators: 1: original variable name, 2: new variable name */
                     $warnings[] = sprintf(__('The PHP code uses the placeholder {%1$s}. Replace it with the variable $%2$s.', 'wpide'), $original, $attributes[$original]);
                 }
             }
@@ -220,13 +223,17 @@ class PostSnippets extends Importer
             $shortcode = $this->shortcodeName($sourceTag);
 
             if ($shortcode === '') {
+                /* translators: %s: original shortcode name */
                 $warnings[] = sprintf(__('"%s" cannot be used as a shortcode name. Content that uses it must be changed to this snippet\'s WPIDE shortcode.', 'wpide'), $sourceTag);
             } elseif (shortcode_exists($shortcode)) {
                 // Usually Post Snippets itself, while it is still active.
+                /* translators: %s: shortcode name */
                 $warnings[] = sprintf(__('The shortcode [%s] is still registered by another plugin (Post Snippets is probably active), so the snippet is imported without a custom shortcode name. Deactivate Post Snippets, then set the name on the snippet.', 'wpide'), $shortcode);
+                /* translators: %s: shortcode name */
                 $noteLines[] = sprintf(__('Original shortcode: [%s]', 'wpide'), $shortcode);
                 $shortcode = '';
             } elseif ($shortcode !== $sourceTag) {
+                /* translators: 1: original shortcode name, 2: new shortcode name */
                 $warnings[] = sprintf(__('Content that uses [%1$s] must be changed to [%2$s].', 'wpide'), $sourceTag, $shortcode);
             }
 
@@ -249,6 +256,7 @@ class PostSnippets extends Importer
         }
 
         $snippet = [
+            /* translators: %s: Post Snippets record ID */
             'title' => $sourceTag !== '' ? $sourceTag : sprintf(__('Post Snippets %s', 'wpide'), $record['id']),
             'note' => implode("\n\n", $noteLines),
             'code' => $code,
@@ -287,6 +295,7 @@ class PostSnippets extends Importer
         $title = trim($record['title']);
 
         $snippet = [
+            /* translators: %s: Post Snippets record ID */
             'title' => $title !== '' ? $title : sprintf(__('Post Snippets %s', 'wpide'), $record['id']),
             'note' => $description,
             'code' => $code,

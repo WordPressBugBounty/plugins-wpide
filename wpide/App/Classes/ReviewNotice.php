@@ -104,13 +104,13 @@ class ReviewNotice {
     public static function ajaxPluginRateAction() {
 
         // Continue only if the nonce is correct
-        $nonce = sanitize_text_field($_REQUEST['_nonce']);
+        $nonce = isset($_REQUEST['_nonce']) ? sanitize_text_field(wp_unslash($_REQUEST['_nonce'])) : '';
 
         if ( ! wp_verify_nonce( $nonce, App::instance()->prefix('wp_notice_action_nonce') ) ) {
             wp_send_json_error();
         }
 
-        $notice_action = sanitize_text_field($_POST['notice_action']);
+        $notice_action = isset($_POST['notice_action']) ? sanitize_text_field(wp_unslash($_POST['notice_action'])) : '';
 
         self::ratePlugin($notice_action);
 
@@ -154,14 +154,16 @@ class ReviewNotice {
         <div class="notice notice-info wpide-notice" data-slug="<?php echo esc_attr(SLUG); ?>">
             <p>
                 <?php
-                echo sprintf(esc_html__("Hey %s, I noticed you've been using %s for the past %s – that’s awesome!", "wpide"), $first_name, '<strong>' . NAME . '</strong>', '<strong>'.$time_passed.'</strong>');
+                /* translators: 1: user first name, 2: plugin name, 3: time since installation */
+                echo wp_kses(sprintf(esc_html__('Hey %1$s, I noticed you\'ve been using %2$s for the past %3$s – that’s awesome!', "wpide"), esc_html($first_name), '<strong>' . esc_html(NAME) . '</strong>', '<strong>' . esc_html($time_passed) . '</strong>'), ['strong' => []]);
                 echo '&nbsp;';
+                /* translators: 1: opening strong tag, 2: closing strong tag */
                 echo sprintf(esc_html__('Could you please do me a %1$sBIG favor%2$s and give it a %1$s5-star rating%2$s on WordPress? Just to %1$s help us%2$s spread the word and boost our motivation. Many thanks!', "wpide"), "<strong>", "</strong>");
                 ?>
                 <br><br>
                 <em>~ Georges H</em>
             </p>
-            <ul class="wpide-notice-action" data-action="<?php echo esc_attr($action);?>" data-nonce="<?php echo wp_create_nonce( App::instance()->prefix('wp_notice_action_nonce') ) ?>">
+            <ul class="wpide-notice-action" data-action="<?php echo esc_attr($action);?>" data-nonce="<?php echo esc_attr(wp_create_nonce( App::instance()->prefix('wp_notice_action_nonce') )) ?>">
                 <li><span class="dashicons dashicons-thumbs-up"></span> <a target="_blank" href="<?php echo esc_url(self::$review_url);?>"><?php echo esc_html__( 'Ok, you deserve it', 'wpide' ) ?></a></li>
                 <li><span class="dashicons dashicons-thumbs-down"></span> <a data-action="not-enough" href="#"><?php echo esc_html__( 'Nope, maybe later', 'wpide' ) ?></a></li>
                 <li><span class="dashicons dashicons-yes"></span> <a data-action="done-rating" href="#"><?php echo esc_html__( 'I already did', 'wpide' ) ?></a></li>

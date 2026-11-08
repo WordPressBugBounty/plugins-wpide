@@ -324,7 +324,7 @@ class Runtime
         self::$editedId = 0;
 
         // phpcs:disable WordPress.Security.NonceVerification
-        if (!is_admin() || !wp_doing_ajax() || ($_GET['action'] ?? '') !== 'wpide_request') {
+        if (!is_admin() || !wp_doing_ajax() || sanitize_key(wp_unslash($_GET['action'] ?? '')) !== 'wpide_request') {
             return 0;
         }
 

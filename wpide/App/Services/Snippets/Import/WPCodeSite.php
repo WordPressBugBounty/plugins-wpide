@@ -43,7 +43,7 @@ class WPCodeSite extends Importer
 
     protected function items(?array $file = null): array
     {
-        $posts = get_posts(['post_type' => 'wpcode', 'post_status' => ['publish', 'draft'], 'numberposts' => -1, 'orderby' => 'ID', 'order' => 'ASC', 'suppress_filters' => true]);
+        $posts = get_posts(['post_type' => 'wpcode', 'post_status' => ['publish', 'draft'], 'numberposts' => -1, 'orderby' => 'ID', 'order' => 'ASC']);
         $items = [];
 
         foreach ($posts as $post) {
@@ -150,6 +150,7 @@ class WPCodeSite extends Importer
         $pages = (int) $wpdb->get_var("SELECT COUNT(DISTINCT post_id) FROM {$wpdb->postmeta} WHERE meta_key IN ('_wpcode_header_scripts','_wpcode_body_scripts','_wpcode_footer_scripts','_wpcode_page_snippets')");
 
         if ($pages && Plans::pro()) {
+            /* translators: %d: number of pages */
             $extras[] = ['key' => 'page_scripts', 'label' => __('Page scripts', 'wpide'), 'detail' => sprintf(_n('%d page', '%d pages', $pages, 'wpide'), $pages)];
         }
 
@@ -235,6 +236,7 @@ class WPCodeSite extends Importer
             $count++;
         }
 
+        /* translators: %d: number of pages */
         return sprintf(_n('Page scripts imported for %d page.', 'Page scripts imported for %d pages.', $count, 'wpide'), $count);
     }
 }

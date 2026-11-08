@@ -9,7 +9,7 @@ define(__NAMESPACE__ . '\URL', plugin_dir_url(__FILE__));
 define(__NAMESPACE__ . '\SLUG', 'wpide');
 define(__NAMESPACE__ . '\NAME', 'WPIDE');
 
-define(__NAMESPACE__ . '\VERSION', '3.6.2');
+define(__NAMESPACE__ . '\VERSION', '3.6.4');
 define(__NAMESPACE__ . '\FM_VERSION', '7.8.1');
 
 define(__NAMESPACE__ . '\AUTHOR', 'XplodedThemes');
@@ -20,13 +20,13 @@ define(__NAMESPACE__ . '\ASSETS_DIR', DIR . 'dist/');
 define(__NAMESPACE__ . '\ASSETS_URL', URL . 'dist/');
 define(__NAMESPACE__ . '\UPLOADS_DIR', wp_normalize_path(wp_upload_dir()['basedir']).'/'.SLUG.'/');
 define(__NAMESPACE__ . '\BACKUPS_DIR', UPLOADS_DIR.'backups/');
-define(__NAMESPACE__ . '\BACKUPS_TODAY_DIR', BACKUPS_DIR.date('Y-m-d'));
+define(__NAMESPACE__ . '\BACKUPS_TODAY_DIR', BACKUPS_DIR.gmdate('Y-m-d'));
 define(__NAMESPACE__ . '\IMAGE_DATA_DIR', UPLOADS_DIR.'imagedata/');
 define(__NAMESPACE__ . '\TMP_DIR', UPLOADS_DIR.'tmp/');
 define(__NAMESPACE__ . '\CONTENT_DIR', wp_normalize_path(realpath(DIR . '/../../')));
 define(__NAMESPACE__ . '\WP_PATH', wp_normalize_path(realpath(CONTENT_DIR.'/../')));
 
-define(__NAMESPACE__ . '\FATAL_ERROR_DROPIN_VERSION', '1.3');
+define(__NAMESPACE__ . '\FATAL_ERROR_DROPIN_VERSION', '1.4');
 define(__NAMESPACE__ . '\FATAL_ERROR_DROPIN_VERSION_OPT', SLUG.'_dropin_version');
 define(__NAMESPACE__ . '\FATAL_ERROR_DROPIN', 'fatal-error-handler.php');
 define(__NAMESPACE__ . '\IS_DEV', empty(getenv('SERVER_SOFTWARE')) && defined('WPIDE_DEV_ENV') && WPIDE_DEV_ENV === true && defined('WPIDE_DEV_URL'));

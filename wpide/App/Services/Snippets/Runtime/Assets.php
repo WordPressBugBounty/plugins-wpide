@@ -31,14 +31,14 @@ class Assets
         $file = $dir . '/' . $name;
 
         if (!is_file($file)) {
-            if ((!is_dir($dir) && !wp_mkdir_p($dir)) || !is_writable($dir)) {
+            if ((!is_dir($dir) && !wp_mkdir_p($dir)) || !wp_is_writable($dir)) {
                 return null;
             }
 
             $temp = $file . '.' . uniqid('', true) . '.tmp';
 
-            if (@file_put_contents($temp, $content, LOCK_EX) === false || !@rename($temp, $file)) { // phpcs:ignore WordPress.PHP.NoSilencedErrors
-                @unlink($temp); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+            if (@file_put_contents($temp, $content, LOCK_EX) === false || !@rename($temp, $file)) { // phpcs:ignore WordPress.PHP.NoSilencedErrors, WordPress.WP.AlternativeFunctions.rename_rename -- atomic replace; WP_Filesystem::move() is not atomic.
+                wp_delete_file($temp);
 
                 return null;
             }
@@ -49,7 +49,7 @@ class Assets
 
             foreach ((array) glob($dir . '/' . (int) $snippet['id'] . '-*.' . $extension) as $old) {
                 if ($old !== $file) {
-                    @unlink($old); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+                    wp_delete_file($old);
                 }
             }
         }
@@ -61,7 +61,7 @@ class Assets
     {
         foreach (['css', 'js'] as $extension) {
             foreach ((array) glob(self::dir() . '/' . ($snippetId ? $snippetId . '-' : '') . '*.' . $extension) as $file) {
-                @unlink($file); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+                wp_delete_file($file);
             }
         }
     }

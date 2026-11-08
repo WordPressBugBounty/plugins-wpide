@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || exit;
+
 use WPIDE\App\AppConfig;
 
 $editable = AppConfig::get('file.editable');

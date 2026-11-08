@@ -55,6 +55,7 @@ trait JsonInput
         }
 
         $plan = Plans::feature($feature);
+        /* translators: %s: plan name */
         $response->json(['message' => sprintf(__('This is part of WPIDE %s and up.', 'wpide'), $plan['plan']), 'code' => 'plan_upgrade', 'tier' => $plan['tier'], 'plan' => $plan['plan']], 403);
 
         return false;

@@ -81,7 +81,7 @@ class FileBackup
 
             $backups_max_days = AppConfig::get('file.backups_max_days', 5);
 
-            $today = date_create_from_format('Y-m-d', date('Y-m-d'));
+            $today = date_create_from_format('Y-m-d', gmdate('Y-m-d'));
 
             $oldBackupFolders = $collection->filter(function($item) use($today, $backups_max_days) {
 

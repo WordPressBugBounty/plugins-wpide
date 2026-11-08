@@ -2,6 +2,8 @@
 
 namespace WPIDE\App\Controllers\Snippets;
 
+defined( 'ABSPATH' ) || exit;
+
 use WPIDE\App\Classes\Freemius;
 use WPIDE\App\Kernel\Request;
 use WPIDE\App\Kernel\Response;
@@ -207,7 +209,7 @@ if (class_exists(Snippets::class) && Snippets::available()) {
             try {
                 $response->json($account + PublicLibrary::mine());
             } catch (LibraryException $e) {
-                $response->json($account + ['author' => null, 'snippets' => [], 'error' => $e->getMessage(), 'code' => $e->errorCode]);
+                $response->json($account + ['author' => null, 'snippets' => [], 'error' => wp_specialchars_decode($e->getMessage(), ENT_QUOTES), 'code' => $e->errorCode]);
             }
         }
 
@@ -228,7 +230,7 @@ if (class_exists(Snippets::class) && Snippets::available()) {
             try {
                 $response->json(['success' => true, 'snippet' => PublicLibrary::publish((int) $snippet['id'], $input)]);
             } catch (LibraryException $e) {
-                $response->json(['success' => false, 'message' => $e->getMessage(), 'code' => $e->errorCode]);
+                $response->json(['success' => false, 'message' => wp_specialchars_decode($e->getMessage(), ENT_QUOTES), 'code' => $e->errorCode]);
             }
         }
 
@@ -244,7 +246,7 @@ if (class_exists(Snippets::class) && Snippets::available()) {
                 PublicLibrary::unpublish((int) $snippet['id']);
                 $response->json(['success' => true]);
             } catch (LibraryException $e) {
-                $response->json(['success' => false, 'message' => $e->getMessage(), 'code' => $e->errorCode]);
+                $response->json(['success' => false, 'message' => wp_specialchars_decode($e->getMessage(), ENT_QUOTES), 'code' => $e->errorCode]);
             }
         }
 

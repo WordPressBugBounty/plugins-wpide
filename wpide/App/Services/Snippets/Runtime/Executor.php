@@ -85,7 +85,8 @@ class Executor
             $url = Assets::url($snippet, 'css', SmartTags::replace($css, $snippet, true));
 
             if ($url) {
-                return sprintf("<link rel='stylesheet' id='wpide-snippet-%d-css' href='%s' media='all' />\n", (int) $snippet['id'], esc_url($url));
+                // Printed at the snippet's chosen insert location (head, footer or post content), where enqueueing is not possible.
+                return sprintf("<link rel='stylesheet' id='wpide-snippet-%d-css' href='%s' media='all' />\n", (int) $snippet['id'], esc_url($url)); // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
             }
         }
 
@@ -104,7 +105,8 @@ class Executor
             $url = Assets::url($snippet, 'js', SmartTags::replace($js, $snippet, true));
 
             if ($url) {
-                return sprintf("<script id=\"wpide-snippet-%d-js\" src=\"%s\"></script>\n", (int) $snippet['id'], esc_url($url));
+                // Printed at the snippet's chosen insert location (head, footer or post content), where enqueueing is not possible.
+                return sprintf("<script id=\"wpide-snippet-%d-js\" src=\"%s\"></script>\n", (int) $snippet['id'], esc_url($url)); // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
             }
         }
 
@@ -164,6 +166,7 @@ class Executor
     {
         extract($__attributes, EXTR_SKIP); // phpcs:ignore WordPress.PHP.DontExtract
 
-        eval($__code); // phpcs:ignore Squiz.PHP.Eval
+        // Runs PHP code snippets written by an administrator, the core purpose of the Snippets module.
+        eval($__code); // phpcs:ignore Squiz.PHP.Eval, Generic.PHP.ForbiddenFunctions.Found
     }
 }
